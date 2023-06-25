@@ -2,9 +2,16 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './users/users.module';
+import { User } from './entities/User';
+import { Profile } from './entities/Profile';
+import { ProfileModule } from './profile/profile.module';
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: '127.0.0.1',
@@ -12,9 +19,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: 'root',
       password: 'new_password',
       database: 'order_app',
-      entities: [],
+      entities: [User, Profile],
       synchronize: true,
     }),
+    UsersModule,
+    ProfileModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
