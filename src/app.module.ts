@@ -8,6 +8,8 @@ import { Profile } from './entities/Profile';
 import { ProfileModule } from './profile/profile.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { OrderType } from './entities/Order-type';
+import { OrderTypeModule } from './order-type/order-type.module';
 
 @Module({
   imports: [
@@ -19,12 +21,13 @@ import { AuthModule } from './auth/auth.module';
       username: 'root',
       password: 'new_password',
       database: 'order_app',
-      entities: [User, Profile],
+      entities: [User, Profile, OrderType],
       synchronize: true,
     }),
     UsersModule,
     ProfileModule,
     AuthModule,
+    OrderTypeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
