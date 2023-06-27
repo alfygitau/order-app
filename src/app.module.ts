@@ -10,6 +10,26 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { OrderType } from './entities/Order-type';
 import { OrderTypeModule } from './order-type/order-type.module';
+import { OrderCategory } from './entities/Order-category';
+import { OrderCategoryModule } from './order-category/order-category.module';
+import { Pages } from './entities/Pages';
+import { PagesModule } from './pages/pages.module';
+import { Style } from './entities/Style';
+import { StylesModule } from './styles/styles.module';
+import { AcademicLevel } from './entities/Academic-level';
+import { AcademicLevelModule } from './academic-level/academic-level.module';
+import { Urgency } from './entities/Urgency';
+import { UrgencyModule } from './urgency/urgency.module';
+import { Subject } from './entities/Subject';
+import { SubjectModule } from './subject/subject.module';
+import { Reference } from './entities/References';
+import { ReferencesModule } from './references/references.module';
+import { OrderFile } from './entities/Order-files';
+import { Order } from './entities/Order';
+import { OrderMessage } from './entities/Order-message';
+import { OrderFilesModule } from './order-files/order-files.module';
+import { OrderMessageModule } from './order-message/order-message.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -21,13 +41,37 @@ import { OrderTypeModule } from './order-type/order-type.module';
       username: 'root',
       password: 'new_password',
       database: 'order_app',
-      entities: [User, Profile, OrderType],
+      entities: [
+        User,
+        Profile,
+        OrderType,
+        OrderCategory,
+        Pages,
+        Style,
+        AcademicLevel,
+        Urgency,
+        Subject,
+        Reference,
+        OrderFile,
+        Order,
+        OrderMessage
+      ],
       synchronize: true,
     }),
     UsersModule,
     ProfileModule,
     AuthModule,
     OrderTypeModule,
+    OrderCategoryModule,
+    PagesModule,
+    StylesModule,
+    AcademicLevelModule,
+    UrgencyModule,
+    SubjectModule,
+    ReferencesModule,
+    OrderFilesModule,
+    OrderMessageModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
