@@ -78,6 +78,7 @@ export class OrderService {
         'order_references',
         'order_messages',
         'order_files',
+        'revision_files',
       ],
     });
 

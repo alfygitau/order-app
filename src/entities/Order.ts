@@ -17,6 +17,7 @@ import { OrderFile } from './Order-files';
 import { OrderMessage } from './Order-message';
 import { Reference } from './References';
 import { Pages } from './Pages';
+import { RevisionFile } from './Revision-files';
 
 @Entity('orders')
 export class Order {
@@ -78,6 +79,9 @@ export class Order {
 
   @OneToMany(() => OrderFile, (file) => file.order)
   order_files: OrderFile[];
+
+  @OneToMany(() => RevisionFile, (file) => file.order)
+  revision_files: RevisionFile[];
 
   @BeforeInsert()
   beforeStart() {
