@@ -56,6 +56,7 @@ import { OrderModule } from './order/order.module';
         Order,
         OrderMessage
       ],
+      logging:true,
       synchronize: true,
     }),
     UsersModule,
