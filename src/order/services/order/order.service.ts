@@ -79,6 +79,7 @@ export class OrderService {
         'order_messages',
         'order_files',
         'revision_files',
+        'order_revision',
       ],
     });
 
@@ -117,7 +118,11 @@ export class OrderService {
 
   async getOrderFiles(orderId: number) {
     let order = await this.getOrderById(orderId);
-
     return order.order_files;
+  }
+
+  async getOrderRevisions(orderId: number) {
+    let order = await this.getOrderById(orderId);
+    return order.order_revision;
   }
 }

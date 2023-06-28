@@ -16,6 +16,10 @@ export class RevisionFile {
   @JoinColumn({ name: 'order' })
   order: Order;
 
+  // @ManyToOne(() => OrderRevision, (revision) => revision.revision_id, { nullable: false })
+  // @JoinColumn({ name: 'order' })
+  // revision_id: OrderRevision;
+
   @Column({ name: 'file_url' })
   fileUrl: string;
 }

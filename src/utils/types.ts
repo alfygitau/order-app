@@ -113,3 +113,7 @@ export type CreateMessageParams = {
   message_content: string;
 };
 
+export type CreateOrderRevisionParams = {
+  revision_title: string;
+  revision_instructions: string;
+};

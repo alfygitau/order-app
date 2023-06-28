@@ -30,9 +30,10 @@ import { OrderMessage } from './entities/Order-message';
 import { OrderFilesModule } from './order-files/order-files.module';
 import { OrderMessageModule } from './order-message/order-message.module';
 import { OrderModule } from './order/order.module';
-import { OrderRevision } from './entities/Order-revision';
 import { RevisionFile } from './entities/Revision-files';
 import { RevisionFilesModule } from './revision-files/revision-files.module';
+import { OrderRevision } from './entities/Order-revision';
+import { OrderRevisionModule } from './order-revision/order-revision.module';
 
 @Module({
   imports: [
@@ -58,8 +59,8 @@ import { RevisionFilesModule } from './revision-files/revision-files.module';
         OrderFile,
         Order,
         OrderMessage,
-        OrderRevision,
         RevisionFile,
+        OrderRevision,
       ],
       // logging: true,
       synchronize: true,
@@ -79,6 +80,7 @@ import { RevisionFilesModule } from './revision-files/revision-files.module';
     OrderMessageModule,
     OrderModule,
     RevisionFilesModule,
+    OrderRevisionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

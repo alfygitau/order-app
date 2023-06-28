@@ -17,6 +17,7 @@ import { OrderFile } from './Order-files';
 import { OrderMessage } from './Order-message';
 import { Reference } from './References';
 import { Pages } from './Pages';
+import { OrderRevision } from './Order-revision';
 import { RevisionFile } from './Revision-files';
 
 @Entity('orders')
@@ -80,15 +81,9 @@ export class Order {
   @OneToMany(() => OrderFile, (file) => file.order)
   order_files: OrderFile[];
 
-  @OneToMany(() => RevisionFile, (file) => file.order)
+  @OneToMany(() => RevisionFile, (revision) => revision.order)
   revision_files: RevisionFile[];
 
-  @BeforeInsert()
-  beforeStart() {
-    const leadingZeros = '00000';
-    const idString = String(this.order_id);
-    const paddedId =
-      leadingZeros.slice(0, leadingZeros.length - idString.length) + idString;
-    this.order_id = parseInt(paddedId, 10);
-  }
+  @OneToMany(() => OrderRevision, (revision) => revision.order)
+  order_revision: OrderRevision[];
 }

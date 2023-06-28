@@ -46,4 +46,9 @@ export class OrderController {
   getOrderFiles(@Param('orderId', ParseIntPipe) orderId: number) {
     return this.orderService.getOrderFiles(orderId);
   }
+
+  @Get(':orderId/revisions')
+  getOrderRevisions(@Param('orderId') orderId: number) {
+    return this.orderService.getOrderRevisions(orderId);
+  }
 }

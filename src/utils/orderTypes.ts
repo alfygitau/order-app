@@ -2,6 +2,7 @@ import { AcademicLevel } from "src/entities/Academic-level";
 import { OrderCategory } from "src/entities/Order-category";
 import { OrderFile } from "src/entities/Order-files";
 import { OrderMessage } from "src/entities/Order-message";
+import { OrderRevision } from "src/entities/Order-revision";
 import { OrderType } from "src/entities/Order-type";
 import { Pages } from "src/entities/Pages";
 import { Reference } from "src/entities/References";
@@ -25,5 +26,6 @@ export type CreateOrderParams = {
   order_spacing: string;
   order_instructions: string;
   order_messages: OrderMessage[];
-  order_fles: OrderFile[];
+  order_files: OrderFile[];
+  order_revision: OrderRevision[];
 };

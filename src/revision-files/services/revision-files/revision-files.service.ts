@@ -34,7 +34,7 @@ export class RevisionFilesService {
     const revisionFileWithUrls = {
         fileId: uploadedFiles[0].fileId,
         order: uploadedFiles[0].order,
-        fileUrl: uploadedFiles.map((file) => file.fileUrl),
+        fileUrls: uploadedFiles.map((file) => file.fileUrl),
       };
   
       return revisionFileWithUrls;

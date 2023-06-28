@@ -16,5 +16,6 @@ import { ConfigModule } from '@nestjs/config';
   ],
   controllers: [RevisionFilesController],
   providers: [RevisionFilesService, OrderService, AwsService],
+  exports: [RevisionFilesService],
 })
 export class RevisionFilesModule {}

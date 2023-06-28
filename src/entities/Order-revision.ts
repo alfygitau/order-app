@@ -4,10 +4,9 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
-  OneToMany,
 } from 'typeorm';
 import { User } from './User';
-import { RevisionFile } from './Revision-files';
+import { Order } from './Order';
 
 @Entity()
 export class OrderRevision {
@@ -27,9 +26,10 @@ export class OrderRevision {
   createdAt: Date;
 
   @ManyToOne(() => User, (user) => user.userId, { nullable: false })
-  @JoinColumn({ name: 'created_by' })
+  @JoinColumn()
   created_by: User;
 
-  @OneToMany(() => RevisionFile, (file) => file.fileId)
-  order_files: RevisionFile[];
+  @ManyToOne(() => Order, (order) => order.order_id)
+  @JoinColumn({ name: 'order_id' })
+  order: Order;
 }
