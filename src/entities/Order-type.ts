@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'order_type' })
 export class OrderType {
@@ -19,4 +25,10 @@ export class OrderType {
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   order_type_pricing: number;
+
+  @CreateDateColumn({ type: 'datetime' })
+  created_at: Date;
+
+  @UpdateDateColumn({ type: 'datetime' })
+  updated_at: Date;
 }

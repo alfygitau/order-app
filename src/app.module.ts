@@ -62,7 +62,7 @@ import { OrderRevisionModule } from './order-revision/order-revision.module';
         RevisionFile,
         OrderRevision,
       ],
-      // logging: true,
+      logging: true,
       synchronize: true,
     }),
     UsersModule,

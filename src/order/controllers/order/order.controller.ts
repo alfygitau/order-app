@@ -5,6 +5,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -22,9 +23,9 @@ export class OrderController {
   }
 
   @Get()
-  getAllOrders() {
+  getAllOrders(@Query('userId') userId?: number) {
     console.log('log');
-    return this.orderService.getAllOrders();
+    return this.orderService.getAllOrders(userId);
   }
 
   @Post(':orderId/upload-files')

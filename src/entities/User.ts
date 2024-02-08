@@ -5,8 +5,12 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { Profile } from './Profile';
+import { Order } from './Order';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -41,4 +45,13 @@ export class User {
   @OneToOne(() => Profile, (profile) => profile.user)
   @JoinColumn()
   profile: Profile;
+
+  // @OneToMany(() => Order, (order) => order.user)
+  // orders: Order[];
+
+  @CreateDateColumn({ type: 'datetime' })
+  created_at: Date;
+
+  @UpdateDateColumn({ type: 'datetime' })
+  updated_at: Date;
 }

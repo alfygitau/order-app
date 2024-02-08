@@ -1,6 +1,11 @@
 import { Exclude } from 'class-transformer';
-import { UserRole } from 'src/entities/User';
 import { Readable } from 'stream';
+
+export enum UserRole {
+  ADMIN = 'admin',
+  CLIENT = 'client',
+  WRITER = 'writer',
+}
 
 export type ContactDetails = {
   phoneNumber: string;

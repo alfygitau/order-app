@@ -4,6 +4,7 @@ import { CustomExceptionFilter } from './errorHandler/customErrorHandler';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
 
   // Register the custom exception filter
   app.useGlobalFilters(new CustomExceptionFilter());

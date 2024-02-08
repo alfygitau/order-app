@@ -9,6 +9,7 @@ import { Reference } from 'src/entities/References';
 import { Style } from 'src/entities/Style';
 import { Subject } from 'src/entities/Subject';
 import { Urgency } from 'src/entities/Urgency';
+import { User } from 'src/entities/User';
 
 export class CreateOrder {
   order_type: OrderType;
@@ -28,4 +29,5 @@ export class CreateOrder {
   order_messages: OrderMessage[];
   order_files: OrderFile[];
   order_revision: OrderRevision[];
+  userId:User
 }

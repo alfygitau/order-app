@@ -6,6 +6,8 @@ import {
   JoinColumn,
   OneToMany,
   BeforeInsert,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Urgency } from './Urgency';
 import { Style } from './Style';
@@ -19,11 +21,16 @@ import { Reference } from './References';
 import { Pages } from './Pages';
 import { OrderRevision } from './Order-revision';
 import { RevisionFile } from './Revision-files';
+import { User } from './User';
 
 @Entity('orders')
 export class Order {
   @PrimaryGeneratedColumn()
   order_id: number;
+
+  @ManyToOne(() => User, { nullable: false })
+  @JoinColumn()
+  user: User;
 
   @ManyToOne(() => OrderType, { nullable: false })
   @JoinColumn()
@@ -67,13 +74,22 @@ export class Order {
   order_language: string;
 
   @Column()
+  public_id: string;
+
+  @Column()
   order_status: string;
 
   @Column()
   order_spacing: string;
 
-  @Column()
+  @Column({ type: 'text', nullable: true })
   order_instructions: string;
+
+  @Column()
+  order_amount: string;
+
+  @Column({ type: 'text' })
+  order_additional_information: string;
 
   @OneToMany(() => OrderMessage, (orderMessage) => orderMessage.order_id)
   order_messages: OrderMessage[];
@@ -86,4 +102,10 @@ export class Order {
 
   @OneToMany(() => OrderRevision, (revision) => revision.order)
   order_revision: OrderRevision[];
+
+  @CreateDateColumn({ type: 'datetime' })
+  created_at: Date;
+
+  @UpdateDateColumn({ type: 'datetime' })
+  updated_at: Date;
 }

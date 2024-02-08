@@ -20,9 +20,9 @@ export class Urgency {
   @Column({ nullable: true })
   order_urgency_description: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'datetime' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'datetime' })
   updated_at: Date;
 }

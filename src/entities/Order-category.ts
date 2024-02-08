@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({name:'order-category'})
+@Entity({ name: 'order-category' })
 export class OrderCategory {
   @PrimaryGeneratedColumn()
   id: number;
@@ -17,9 +17,9 @@ export class OrderCategory {
   @Column({ nullable: true })
   order_category_description: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'datetime' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'datetime' })
   updated_at: Date;
 }

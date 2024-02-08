@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class OrderService {
+  private lastBigIntValue: bigint = BigInt(2345);
   constructor(
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
@@ -18,13 +19,27 @@ export class OrderService {
   ) {}
 
   async createOrder(orderPayload: CreateOrderParams) {
-    let newOrder = await this.orderRepository.create(orderPayload);
+    const now = new Date();
+    const timestamp = now.toISOString().replace(/[-:.TZ]/g, '');
+    const public_id = `OD-${timestamp}-${this.getNextBigIntValue()}`;
+    let newOrder = await this.orderRepository.create({
+      ...orderPayload,
+      public_id,
+    });
 
     return await this.orderRepository.save(newOrder);
   }
 
-  async getAllOrders() {
+  getNextBigIntValue(): bigint {
+    this.lastBigIntValue += BigInt(1);
+    return this.lastBigIntValue;
+  }
+
+  async getAllOrders(userId) {
     return this.orderRepository.find({
+      where: {
+        user: { userId },
+      },
       relations: [
         'order_type',
         'order_category',
@@ -36,6 +51,7 @@ export class OrderService {
         'order_references',
         'order_messages',
         'order_files',
+        'user',
       ],
     });
   }
