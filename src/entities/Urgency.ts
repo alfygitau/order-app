@@ -17,7 +17,7 @@ export class Urgency {
   @Column()
   order_urgency_duration: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
   order_urgency_value: number;
 
   @Column({ nullable: true })

@@ -14,7 +14,7 @@ export class OrderCategory {
   @Column()
   order_category_name: string;
 
-  @Column()
+  @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
   order_category_value: number;
 
   @Column({ nullable: true })

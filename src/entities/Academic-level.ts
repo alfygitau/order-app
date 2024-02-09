@@ -20,7 +20,7 @@ export class AcademicLevel {
   @Column({ nullable: true })
   academic_level_code: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
   academic_level_value: number;
 
   @Column({ nullable: true })
