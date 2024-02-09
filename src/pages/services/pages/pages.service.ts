@@ -23,7 +23,7 @@ export class PagesService {
 
   async findPageById(pageId: number) {
     const page = await this.pagesRepository.findOneById(pageId);
-
+    console.log('page', page);
     if (!page) throw new NotFoundException();
 
     return page;
