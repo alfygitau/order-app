@@ -14,6 +14,9 @@ export class OrderCategory {
   @Column()
   order_category_name: string;
 
+  @Column()
+  order_category_value: number;
+
   @Column({ nullable: true })
   order_category_description: string;
 

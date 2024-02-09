@@ -21,6 +21,9 @@ export class AcademicLevel {
   academic_level_code: string;
 
   @Column({ nullable: true })
+  academic_level_value: number;
+
+  @Column({ nullable: true })
   level_order: number;
 
   @Column({ default: true })

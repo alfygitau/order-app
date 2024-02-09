@@ -18,6 +18,9 @@ export class Urgency {
   order_urgency_duration: number;
 
   @Column({ nullable: true })
+  order_urgency_value: number;
+
+  @Column({ nullable: true })
   order_urgency_description: string;
 
   @CreateDateColumn({ type: 'datetime' })
