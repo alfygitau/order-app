@@ -8,11 +8,17 @@ import { Order } from 'src/entities/Order';
 import { AwsService } from 'src/order-files/services/aws/aws.service';
 import { OrderFile } from 'src/entities/Order-files';
 import { ConfigModule } from '@nestjs/config';
+import { CompletedOrderFile } from 'src/entities/Completed-order-files';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([RevisionFile, Order, OrderFile]),
+    TypeOrmModule.forFeature([
+      RevisionFile,
+      Order,
+      OrderFile,
+      CompletedOrderFile,
+    ]),
   ],
   controllers: [RevisionFilesController],
   providers: [RevisionFilesService, OrderService, AwsService],

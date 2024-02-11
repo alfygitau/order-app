@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CompletedOrderFile } from 'src/entities/Completed-order-files';
 import { Order } from 'src/entities/Order';
 import { OrderFile } from 'src/entities/Order-files';
 import { AwsService } from 'src/order-files/services/aws/aws.service';
@@ -16,6 +17,9 @@ export class OrderService {
 
     @InjectRepository(OrderFile)
     private readonly OrderFilesRepository: Repository<OrderFile>,
+
+    @InjectRepository(CompletedOrderFile)
+    private readonly completeOrderFilesRepository: Repository<CompletedOrderFile>,
   ) {}
 
   async createOrder(orderPayload: CreateOrderParams) {
@@ -35,10 +39,11 @@ export class OrderService {
     return this.lastBigIntValue;
   }
 
-  async getAllOrders(userId) {
+  async getAllOrders(userId, status) {
     return this.orderRepository.find({
       where: {
         user: { userId },
+        order_status: status,
       },
       relations: [
         'order_type',
@@ -54,6 +59,80 @@ export class OrderService {
         'user',
       ],
     });
+  }
+  async assignOrder(orderId: number) {
+    let order = await this.getOrderById(orderId);
+    // Check if the order exists
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${orderId} not found`);
+    }
+    // Update the order_status field
+    order.order_status = 'Assigned';
+
+    // Save the updated Order back to the database
+    const updatedOrder = await this.orderRepository.save(order);
+    return updatedOrder;
+  }
+
+  async reAssignOrder(orderId: number) {
+    let order = await this.getOrderById(orderId);
+    // Check if the order exists
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${orderId} not found`);
+    }
+    // Update the order_status field
+    order.order_status = 'Active';
+
+    // Save the updated Order back to the database
+    const updatedOrder = await this.orderRepository.save(order);
+    return updatedOrder;
+  }
+
+  async cancelOrder(orderId: number) {
+    let order = await this.getOrderById(orderId);
+    // Check if the order exists
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${orderId} not found`);
+    }
+    // Update the order_status field
+    order.order_status = 'Cancelled';
+
+    // Save the updated Order back to the database
+    const updatedOrder = await this.orderRepository.save(order);
+    return updatedOrder;
+  }
+
+  async submitOrder(orderId: number, files: Express.Multer.File[]) {
+    const uploadedFileUrls = await this.awsService.uploadOrderFiles(files);
+    let order = await this.getOrderById(orderId);
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${orderId} not found`);
+    }
+
+    const uploadedFiles: CompletedOrderFile[] = [];
+    // Create a new OrderFile instance
+    for (let i = 0; i < uploadedFileUrls.length; i++) {
+      const url = uploadedFileUrls[i];
+      const orderFile = new CompletedOrderFile();
+      orderFile.order = order;
+      orderFile.fileUrl = url;
+
+      // Save the OrderFile
+      const savedOrderFile = await this.completeOrderFilesRepository.save(
+        orderFile,
+      );
+      uploadedFiles.push(savedOrderFile);
+    }
+
+    const completeOrderFileWithUrls = {
+      fileId: uploadedFiles[0].fileId,
+      order: uploadedFiles[0].order,
+      fileUrl: uploadedFiles.map((file) => file.fileUrl),
+    };
+    order.order_status = 'Completed';
+    const updatedOrder = await this.orderRepository.save(order);
+
+    return { order: updatedOrder, files: completeOrderFileWithUrls };
   }
 
   getAvailableOrders(availableStatus: string) {
@@ -96,6 +175,7 @@ export class OrderService {
         'order_files',
         'revision_files',
         'order_revision',
+        'user',
       ],
     });
 

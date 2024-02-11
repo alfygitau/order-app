@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { Profile } from './Profile';
 import { Order } from './Order';
+import { Rating } from './Rating';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -42,16 +43,23 @@ export class User {
   @Column()
   phoneNumber: string;
 
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
+
+  @OneToMany(() => Rating, (rating) => rating.user)
+  ratings: Rating[];
+
   @OneToOne(() => Profile, (profile) => profile.user)
   @JoinColumn()
   profile: Profile;
-
-  // @OneToMany(() => Order, (order) => order.user)
-  // orders: Order[];
 
   @CreateDateColumn({ type: 'datetime' })
   created_at: Date;
 
   @UpdateDateColumn({ type: 'datetime' })
   updated_at: Date;
+
+  get orderCount(): number {
+    return this.orders ? this.orders.length : 0;
+  }
 }

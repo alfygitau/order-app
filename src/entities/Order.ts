@@ -22,6 +22,7 @@ import { Pages } from './Pages';
 import { OrderRevision } from './Order-revision';
 import { RevisionFile } from './Revision-files';
 import { User } from './User';
+import { CompletedOrderFile } from './Completed-order-files';
 
 @Entity('orders')
 export class Order {
@@ -96,6 +97,9 @@ export class Order {
 
   @OneToMany(() => OrderFile, (file) => file.order)
   order_files: OrderFile[];
+
+  @OneToMany(() => CompletedOrderFile, (file) => file.order)
+  complete_order_files: CompletedOrderFile[];
 
   @OneToMany(() => RevisionFile, (revision) => revision.order)
   revision_files: RevisionFile[];

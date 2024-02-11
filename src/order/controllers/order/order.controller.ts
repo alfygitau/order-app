@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
   UploadedFiles,
@@ -23,9 +24,11 @@ export class OrderController {
   }
 
   @Get()
-  getAllOrders(@Query('userId') userId?: number) {
-    console.log('log');
-    return this.orderService.getAllOrders(userId);
+  getAllOrders(
+    @Query('userId') userId?: number,
+    @Query('status') status?: string,
+  ) {
+    return this.orderService.getAllOrders(userId, status);
   }
 
   @Post(':orderId/upload-files')
@@ -51,5 +54,29 @@ export class OrderController {
   @Get(':orderId/revisions')
   getOrderRevisions(@Param('orderId') orderId: number) {
     return this.orderService.getOrderRevisions(orderId);
+  }
+
+  @Patch(':orderId/assign')
+  assignOrder(@Param('orderId') orderId: number) {
+    return this.orderService.assignOrder(orderId);
+  }
+
+  @Patch(':orderId/re-assign')
+  reAssignOrder(@Param('orderId') orderId: number) {
+    return this.orderService.reAssignOrder(orderId);
+  }
+
+  @Patch(':orderId/cancel-order')
+  cancelOrder(@Param('orderId') orderId: number) {
+    return this.orderService.cancelOrder(orderId);
+  }
+
+  @Patch(':orderId/submit-order')
+  @UseInterceptors(FilesInterceptor('files'))
+  completeOrder(
+    @Param('orderId') orderId: number,
+    @UploadedFiles() files: Express.Multer.File[],
+  ) {
+    return this.orderService.submitOrder(orderId, files);
   }
 }

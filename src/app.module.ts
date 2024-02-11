@@ -34,6 +34,8 @@ import { RevisionFile } from './entities/Revision-files';
 import { RevisionFilesModule } from './revision-files/revision-files.module';
 import { OrderRevision } from './entities/Order-revision';
 import { OrderRevisionModule } from './order-revision/order-revision.module';
+import { Rating } from './entities/Rating';
+import { CompletedOrderFile } from './entities/Completed-order-files';
 
 @Module({
   imports: [
@@ -61,6 +63,8 @@ import { OrderRevisionModule } from './order-revision/order-revision.module';
         OrderMessage,
         RevisionFile,
         OrderRevision,
+        Rating,
+        CompletedOrderFile,
       ],
       logging: true,
       synchronize: true,
