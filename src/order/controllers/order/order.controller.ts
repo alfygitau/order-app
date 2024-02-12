@@ -37,7 +37,6 @@ export class OrderController {
     @Param('orderId', ParseIntPipe) orderId: number,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
-    console.log(orderId);
     return this.orderService.addOrderFiles(orderId, files);
   }
 
