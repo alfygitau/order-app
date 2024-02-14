@@ -9,6 +9,8 @@ import { AwsService } from 'src/order-files/services/aws/aws.service';
 import { OrderFile } from 'src/entities/Order-files';
 import { ConfigModule } from '@nestjs/config';
 import { CompletedOrderFile } from 'src/entities/Completed-order-files';
+import { User } from 'src/entities/User';
+import { OrderMessage } from 'src/entities/Order-message';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { CompletedOrderFile } from 'src/entities/Completed-order-files';
       Order,
       OrderFile,
       CompletedOrderFile,
+      User,
+      OrderMessage
     ]),
   ],
   controllers: [RevisionFilesController],

@@ -3,7 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CompletedOrderFile } from 'src/entities/Completed-order-files';
 import { Order } from 'src/entities/Order';
 import { OrderFile } from 'src/entities/Order-files';
+import { OrderMessage } from 'src/entities/Order-message';
+import { User } from 'src/entities/User';
 import { AwsService } from 'src/order-files/services/aws/aws.service';
+import { CreateOrderMessage } from 'src/order/dtos/CreateOrderMessage.dto';
 import { CreateOrderParams } from 'src/utils/orderTypes';
 import { Repository } from 'typeorm';
 
@@ -20,6 +23,12 @@ export class OrderService {
 
     @InjectRepository(CompletedOrderFile)
     private readonly completeOrderFilesRepository: Repository<CompletedOrderFile>,
+
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+
+    @InjectRepository(OrderMessage)
+    private readonly orderMessageRepository: Repository<OrderMessage>,
   ) {}
 
   async createOrder(orderPayload: CreateOrderParams) {
@@ -220,5 +229,23 @@ export class OrderService {
   async getOrderRevisions(orderId: number) {
     let order = await this.getOrderById(orderId);
     return order.order_revision;
+  }
+
+  async getOrderMessages(orderId: number) {
+    let order = await this.getOrderById(orderId);
+    return order.order_messages;
+  }
+  async createOrderMessage(orderId, payload: CreateOrderMessage) {
+    let order = await this.getOrderById(orderId);
+    const user = await this.userRepository.findOne({
+      where: { userId: payload.user_id },
+    });
+
+    const orderMessage = new OrderMessage();
+    orderMessage.order_id = order;
+    orderMessage.user_id = user;
+    orderMessage.message_content = payload.message_content;
+
+    return this.orderMessageRepository.save(orderMessage);
   }
 }

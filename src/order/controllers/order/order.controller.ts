@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { CreateOrder } from 'src/order/dtos/CreateOrder.dto';
+import { CreateOrderMessage } from 'src/order/dtos/CreateOrderMessage.dto';
 import { OrderService } from 'src/order/services/order/order.service';
 
 @Controller('orders')
@@ -48,6 +49,19 @@ export class OrderController {
   @Get(':orderId/order-files')
   getOrderFiles(@Param('orderId', ParseIntPipe) orderId: number) {
     return this.orderService.getOrderFiles(orderId);
+  }
+
+  @Post(':orderId/order-message')
+  createOrderMessage(
+    @Param('orderId', ParseIntPipe) orderId: number,
+    @Body('user_id') payload: CreateOrderMessage,
+  ) {
+    return this.orderService.createOrderMessage(orderId, payload);
+  }
+
+  @Get(':orderId/order-messages')
+  getOrderMessages(@Param('orderId', ParseIntPipe) orderId: number) {
+    return this.orderService.getOrderMessages(orderId);
   }
 
   @Get(':orderId/revisions')
