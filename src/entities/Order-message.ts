@@ -23,7 +23,7 @@ export class OrderMessage {
   @JoinColumn({ name: 'user_id' })
   user_id: User;
 
-  @Column({ name: 'message_content' })
+  @Column({ name: 'message_content', nullable: true })
   message_content: string;
 
   @CreateDateColumn({ type: 'datetime' })

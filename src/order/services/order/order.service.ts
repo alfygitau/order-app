@@ -236,11 +236,11 @@ export class OrderService {
     return order.order_messages;
   }
   async createOrderMessage(orderId, payload: CreateOrderMessage) {
+    
     let order = await this.getOrderById(orderId);
     const user = await this.userRepository.findOne({
       where: { userId: payload.user_id },
     });
-
     const orderMessage = new OrderMessage();
     orderMessage.order_id = order;
     orderMessage.user_id = user;

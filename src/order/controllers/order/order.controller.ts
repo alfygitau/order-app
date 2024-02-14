@@ -54,7 +54,7 @@ export class OrderController {
   @Post(':orderId/order-message')
   createOrderMessage(
     @Param('orderId', ParseIntPipe) orderId: number,
-    @Body('user_id') payload: CreateOrderMessage,
+    @Body() payload: CreateOrderMessage,
   ) {
     return this.orderService.createOrderMessage(orderId, payload);
   }
