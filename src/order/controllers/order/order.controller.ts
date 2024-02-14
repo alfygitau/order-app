@@ -94,7 +94,7 @@ export class OrderController {
     return this.orderService.submitOrder(orderId, files);
   }
 
-  @Patch(':/orderId/update-order')
+  @Patch(':orderId/update-order')
   updateOrder(@Param('orderId') orderId: number, @Body() payload: UpdateOrder) {
     return this.orderService.updateOrder(orderId, payload);
   }
