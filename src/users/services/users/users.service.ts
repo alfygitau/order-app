@@ -9,16 +9,45 @@ import { User } from 'src/entities/User';
 import { CreateUser, UpdateUser } from 'src/utils/types';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Rating } from 'src/entities/Rating';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+
+    @InjectRepository(Rating)
+    private ratingRepository: Repository<Rating>,
   ) {}
 
-  findAllUsers() {
-    return this.usersRepository.find();
+  async findAllUsers() {
+    const usersWithCountAndRatings = await this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.orders', 'orders')
+      .leftJoinAndSelect('user.ratings', 'ratings')
+      .addGroupBy('user.userId')
+      .addSelect('COUNT(orders.order_id)', 'orderCount')
+      .addSelect('AVG(ratings.value)', 'averageRating')
+      .getRawMany();
+
+    return usersWithCountAndRatings.map((userWithCountAndRatings) => {
+      const user = new User();
+      Object.assign(user, {
+        userId: userWithCountAndRatings.user_userId,
+        role: userWithCountAndRatings.user_role,
+        name: userWithCountAndRatings.user_name,
+        email: userWithCountAndRatings.user_email,
+        password: userWithCountAndRatings.user_password,
+        phoneNumber: userWithCountAndRatings.user_phoneNumber,
+        created_at: userWithCountAndRatings.user_created_at,
+        updated_at: userWithCountAndRatings.user_updated_at,
+        averageRating: parseFloat(userWithCountAndRatings.averageRating) || 0,
+        orderCount: parseInt(userWithCountAndRatings.orderCount, 10) || 0,
+      });
+
+      return user;
+    });
   }
 
   async createUser(userPayload: CreateUser) {
@@ -62,5 +91,19 @@ export class UsersService {
       throw new NotFoundException(`User with ID '${id}' not found.`);
     }
     return updatedUser;
+  }
+
+  async addRating(
+    userId: number,
+    value: number,
+    comments: string,
+  ): Promise<Rating> {
+    const user = await this.usersRepository.findOne({ where: { userId } });
+    const newRating = this.ratingRepository.create({
+      value,
+      comments,
+      user,
+    });
+    return this.ratingRepository.save(newRating);
   }
 }

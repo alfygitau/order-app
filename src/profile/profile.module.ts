@@ -7,9 +7,13 @@ import { User } from 'src/entities/User';
 import { UsersService } from 'src/users/services/users/users.service';
 import { AwsS3Service } from './services/aws/aws.service';
 import { ConfigModule } from '@nestjs/config';
+import { Rating } from 'src/entities/Rating';
 
 @Module({
-  imports: [ConfigModule.forRoot(), TypeOrmModule.forFeature([Profile, User])],
+  imports: [
+    ConfigModule.forRoot(),
+    TypeOrmModule.forFeature([Profile, User, Rating]),
+  ],
   controllers: [ProfileController],
   providers: [ProfileService, UsersService, AwsS3Service],
 })

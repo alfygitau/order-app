@@ -43,6 +43,12 @@ export class User {
   @Column()
   phoneNumber: string;
 
+  @Column()
+  orderCount: number;
+
+  @Column()
+  averageRating: number;
+
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
 
@@ -59,7 +65,20 @@ export class User {
   @UpdateDateColumn({ type: 'datetime' })
   updated_at: Date;
 
-  get orderCount(): number {
-    return this.orders ? this.orders.length : 0;
+  calculateOrderCount() {
+    this.orderCount = this.orders ? this.orders.length : 0;
+  }
+  calculateAverageRating() {
+    if (this.ratings && this.ratings.length > 0) {
+      const totalRating = this.ratings.reduce(
+        (sum, rating) => sum + rating.value,
+        0,
+      );
+      this.averageRating = Number(
+        (totalRating / this.ratings.length).toFixed(1),
+      );
+    } else {
+      this.averageRating = 0.0;
+    }
   }
 }

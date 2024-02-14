@@ -12,6 +12,7 @@ import { AwsService } from 'src/order-files/services/aws/aws.service';
 import { ConfigService } from '@nestjs/config';
 import { CompletedOrderFile } from 'src/entities/Completed-order-files';
 import { OrderMessage } from 'src/entities/Order-message';
+import { Rating } from 'src/entities/Rating';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { OrderMessage } from 'src/entities/Order-message';
       User,
       OrderFile,
       CompletedOrderFile,
-      OrderMessage
+      OrderMessage,
+      Rating
     ]),
   ],
   controllers: [OrderRevisionController],

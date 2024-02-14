@@ -45,7 +45,15 @@ export class UsersController {
   @Patch(':id')
   updateUser(@Param('id') id: number, @Body() userDetails: UpdateUser) {
     const user = this.userService.updateUser(id, userDetails);
-
     return plainToClass(SerializedUser, user);
+  }
+
+  @Post(':userId/add-user-rating')
+  addUserRating(
+    @Param('userId') userId: number,
+    @Body('value') value: number,
+    @Body('comments') comments: string,
+  ) {
+    return this.userService.addRating(userId, value, comments);
   }
 }
