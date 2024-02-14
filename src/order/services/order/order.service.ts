@@ -7,6 +7,7 @@ import { OrderMessage } from 'src/entities/Order-message';
 import { User } from 'src/entities/User';
 import { AwsService } from 'src/order-files/services/aws/aws.service';
 import { CreateOrderMessage } from 'src/order/dtos/CreateOrderMessage.dto';
+import { UpdateOrder } from 'src/order/dtos/UpdateOrder.dto';
 import { CreateOrderParams } from 'src/utils/orderTypes';
 import { Repository } from 'typeorm';
 
@@ -236,7 +237,6 @@ export class OrderService {
     return order.order_messages;
   }
   async createOrderMessage(orderId, payload: CreateOrderMessage) {
-    
     let order = await this.getOrderById(orderId);
     const user = await this.userRepository.findOne({
       where: { userId: payload.user_id },
@@ -247,5 +247,29 @@ export class OrderService {
     orderMessage.message_content = payload.message_content;
 
     return this.orderMessageRepository.save(orderMessage);
+  }
+  async updateOrder(orderId, payload: UpdateOrder) {
+    const order = await this.getOrderById(orderId);
+
+    order.academic_level = payload.academic_level;
+    order.order_style = payload.order_style;
+    order.order_subject = payload.order_subject;
+    order.order_category = payload.order_category;
+    order.order_deadline = payload.order_deadline;
+    order.order_pages = payload.order_pages;
+    order.order_references = payload.order_references;
+    order.order_type = payload.order_type;
+
+    order.order_instructions = payload.order_instructions;
+    order.order_status = payload.order_status;
+    order.order_spacing = payload.order_spacing;
+    order.order_additional_information = payload.order_additional_information;
+    order.order_topic = payload.order_topic;
+    order.order_amount = payload.order_amount;
+    order.phone_number = payload.phone_number;
+
+    const updatedOrder = await this.orderRepository.save(order);
+
+    return updatedOrder;
   }
 }

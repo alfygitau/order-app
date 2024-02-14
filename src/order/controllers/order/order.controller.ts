@@ -13,6 +13,7 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { CreateOrder } from 'src/order/dtos/CreateOrder.dto';
 import { CreateOrderMessage } from 'src/order/dtos/CreateOrderMessage.dto';
+import { UpdateOrder } from 'src/order/dtos/UpdateOrder.dto';
 import { OrderService } from 'src/order/services/order/order.service';
 
 @Controller('orders')
@@ -91,5 +92,10 @@ export class OrderController {
     @UploadedFiles() files: Express.Multer.File[],
   ) {
     return this.orderService.submitOrder(orderId, files);
+  }
+
+  @Patch(':/orderId/update-order')
+  updateOrder(@Param('orderId') orderId: number, @Body() payload: UpdateOrder) {
+    return this.orderService.updateOrder(orderId, payload);
   }
 }
