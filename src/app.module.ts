@@ -36,6 +36,7 @@ import { OrderRevision } from './entities/Order-revision';
 import { OrderRevisionModule } from './order-revision/order-revision.module';
 import { Rating } from './entities/Rating';
 import { CompletedOrderFile } from './entities/Completed-order-files';
+import { PaypalModule } from './paypal/paypal.module';
 
 @Module({
   imports: [
@@ -85,6 +86,7 @@ import { CompletedOrderFile } from './entities/Completed-order-files';
     OrderModule,
     RevisionFilesModule,
     OrderRevisionModule,
+    PaypalModule,
   ],
   controllers: [AppController],
   providers: [AppService],
