@@ -21,15 +21,20 @@ export class UsersService {
     private ratingRepository: Repository<Rating>,
   ) {}
 
-  async findAllUsers() {
-    const usersWithCountAndRatings = await this.usersRepository
+  async findAllUsers(role) {
+    const queryBuilder = this.usersRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.orders', 'orders')
       .leftJoinAndSelect('user.ratings', 'ratings')
       .addGroupBy('user.userId')
       .addSelect('COUNT(orders.order_id)', 'orderCount')
-      .addSelect('AVG(ratings.value)', 'averageRating')
-      .getRawMany();
+      .addSelect('AVG(ratings.value)', 'averageRating');
+
+    if (role) {
+      queryBuilder.andWhere('user.role = :role', { role });
+    }
+
+    const usersWithCountAndRatings = await queryBuilder.getRawMany();
 
     return usersWithCountAndRatings.map((userWithCountAndRatings) => {
       const user = new User();

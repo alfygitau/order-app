@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
@@ -20,10 +21,10 @@ import { SerializedUser } from 'src/utils/types';
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get()
-  getUsers() {
-    const users = this.userService.findAllUsers();
+  getUsers(@Query('role') role?: string) {
+    const users = this.userService.findAllUsers(role);
     return plainToClass(SerializedUser, users);
   }
 

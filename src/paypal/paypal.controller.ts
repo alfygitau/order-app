@@ -14,7 +14,6 @@ export class PaypalController {
       return { success: false, error: error.message };
     }
   }
-
   @Post('execute/:paymentId/:payerId')
   async executePayment(
     @Param('paymentId') paymentId: string,
