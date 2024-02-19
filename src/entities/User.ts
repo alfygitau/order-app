@@ -46,7 +46,7 @@ export class User {
   @Column()
   orderCount: number;
 
-  @Column()
+  @Column({ default: 1 })
   averageRating: number;
 
   @OneToMany(() => Order, (order) => order.user)
