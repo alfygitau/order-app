@@ -222,6 +222,27 @@ export class OrderService {
     return orderFileWithUrls;
   }
 
+  async removeOrderFile(fileId: number) {
+    // Retrieve the OrderFile entity based on the fileId
+    const orderFileToRemove = await this.OrderFilesRepository.findOne({
+      where: { fileId },
+      relations: ['order'],
+    });
+
+    if (!orderFileToRemove) {
+      throw new NotFoundException(`OrderFile with ID ${fileId} not found`);
+    }
+
+    const order = orderFileToRemove.order;
+    if (order) {
+      order.order_files = order.order_files?.filter(file => file.fileId !== fileId);
+      await this.orderRepository.save(order);
+    }
+
+    // Delete file from the database
+    await this.OrderFilesRepository.remove(orderFileToRemove);
+  }
+
   async getOrderFiles(orderId: number) {
     let order = await this.getOrderById(orderId);
     return order.order_files;

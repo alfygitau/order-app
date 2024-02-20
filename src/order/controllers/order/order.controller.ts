@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -97,5 +98,10 @@ export class OrderController {
   @Patch(':orderId/update-order')
   updateOrder(@Param('orderId') orderId: number, @Body() payload: UpdateOrder) {
     return this.orderService.updateOrder(orderId, payload);
+  }
+
+  @Delete(':fileId/remove-order-file')
+  removeOrderFile(@Param('fileId', ParseIntPipe) fileId: number) {
+    return this.orderService.removeOrderFile(fileId);
   }
 }
