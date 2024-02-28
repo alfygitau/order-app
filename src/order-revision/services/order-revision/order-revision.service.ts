@@ -34,6 +34,8 @@ export class OrderRevisionService {
   }
 
   getAllRevisions() {
-    return this.orderRevisionRepository.find();
+    return this.orderRevisionRepository.find({
+      relations: ['order'],
+    });
   }
 }
