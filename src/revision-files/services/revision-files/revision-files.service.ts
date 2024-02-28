@@ -15,7 +15,11 @@ export class RevisionFilesService {
     @Inject(AwsService) private readonly awsService: AwsService,
   ) {}
 
-  async uploadRevisionFiles(orderId: number, files: Express.Multer.File[]) {
+  async uploadRevisionFiles(
+    orderId: number,
+    revisionId: number,
+    files: Express.Multer.File[],
+  ) {
     let urls = await this.awsService.uploadOrderFiles(files);
     const order = await this.orderService.getOrderById(orderId);
     const uploadedFiles = [];
@@ -28,15 +32,15 @@ export class RevisionFilesService {
       const savedRevisionFiles = await this.revisionFileRepository.save(
         revisionFile,
       );
-      uploadedFiles.push(savedRevisionFiles)
+      uploadedFiles.push(savedRevisionFiles);
     }
 
     const revisionFileWithUrls = {
-        fileId: uploadedFiles[0].fileId,
-        order: uploadedFiles[0].order,
-        fileUrls: uploadedFiles.map((file) => file.fileUrl),
-      };
-  
-      return revisionFileWithUrls;
+      fileId: uploadedFiles[0].fileId,
+      order: uploadedFiles[0].order,
+      fileUrls: uploadedFiles.map((file) => file.fileUrl),
+    };
+
+    return revisionFileWithUrls;
   }
 }

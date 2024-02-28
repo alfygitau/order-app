@@ -12,12 +12,13 @@ import { RevisionFilesService } from 'src/revision-files/services/revision-files
 export class RevisionFilesController {
   constructor(private readonly revisionFileService: RevisionFilesService) {}
 
-  @Post(':orderId/upload')
+  @Post(':orderId/:revisionId/upload')
   @UseInterceptors(FilesInterceptor('files'))
   uploadRevisionFiles(
     @Param('orderId') orderId: number,
+    @Param('revisionId') revisionId: number,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
-    return this.revisionFileService.uploadRevisionFiles(orderId, files);
+    return this.revisionFileService.uploadRevisionFiles(orderId, revisionId, files);
   }
 }
