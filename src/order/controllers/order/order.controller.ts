@@ -34,6 +34,21 @@ export class OrderController {
     return this.orderService.getAllOrders(userId, status);
   }
 
+  @Get('/cancelled-orders')
+  getCancelledOrders() {
+    return this.orderService.getCancelledOrders();
+  }
+
+  @Get('/completed-orders')
+  getCompletedOrders() {
+    return this.orderService.getCompletedOrders();
+  }
+
+  @Get('/assigned-orders')
+  getAssignedOrders() {
+    return this.orderService.getAssignedOrders();
+  }
+
   @Post(':orderId/upload-files')
   @UseInterceptors(FilesInterceptor('files'))
   uploadOrderFiles(

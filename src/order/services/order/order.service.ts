@@ -145,27 +145,33 @@ export class OrderService {
     return { order: updatedOrder, files: completeOrderFileWithUrls };
   }
 
-  getAvailableOrders(availableStatus: string) {
+  getAvailableOrders() {
     return this.orderRepository.find({
-      where: { order_status: availableStatus },
+      where: { order_status: 'Available' },
     });
   }
 
-  getCancelledOrders(cancelledStatus: string) {
+  getCancelledOrders() {
     return this.orderRepository.find({
-      where: { order_status: cancelledStatus },
+      where: { order_status: 'Cancelled' },
     });
   }
 
-  getCompletedOrders(completedStatus: string) {
+  getCompletedOrders() {
     return this.orderRepository.find({
-      where: { order_status: completedStatus },
+      where: { order_status: 'Completed' },
     });
   }
 
-  getPendingOrders(pendingStatus) {
+  getPendingOrders() {
     return this.orderRepository.find({
-      where: { order_status: pendingStatus },
+      where: { order_status: 'Pending' },
+    });
+  }
+
+  getAssignedOrders() {
+    return this.orderRepository.find({
+      where: { order_status: 'Assigned' },
     });
   }
 
@@ -235,7 +241,9 @@ export class OrderService {
 
     const order = orderFileToRemove.order;
     if (order) {
-      order.order_files = order.order_files?.filter(file => file.fileId !== fileId);
+      order.order_files = order.order_files?.filter(
+        (file) => file.fileId !== fileId,
+      );
       await this.orderRepository.save(order);
     }
 
