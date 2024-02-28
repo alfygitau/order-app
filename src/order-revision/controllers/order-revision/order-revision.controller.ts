@@ -30,4 +30,9 @@ export class OrderRevisionController {
   getAllRevisions() {
     return this.orderRevisionService.getAllRevisions();
   }
+
+  @Get(':revisionId')
+  getRevisionById(@Param('revisionId', ParseIntPipe) revisionId: number) {
+    return this.orderRevisionService.getOrderRevisionById(revisionId);
+  }
 }

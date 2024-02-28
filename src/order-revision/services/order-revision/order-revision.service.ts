@@ -38,4 +38,10 @@ export class OrderRevisionService {
       relations: ['order'],
     });
   }
+  getOrderRevisionById(revisionId) {
+    return this.orderRevisionRepository.findOne({
+      where: { revision_id: revisionId },
+      relations: ['order'],
+    });
+  }
 }
