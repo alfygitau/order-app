@@ -32,4 +32,8 @@ export class OrderRevisionService {
 
     return await this.orderRevisionRepository.save(newRevision);
   }
+
+  getAllRevisions() {
+    return this.orderRevisionRepository.find();
+  }
 }

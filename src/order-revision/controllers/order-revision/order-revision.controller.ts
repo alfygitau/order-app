@@ -1,4 +1,11 @@
-import { Body, Controller, Param, ParseIntPipe, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { CreateOrderRevision } from 'src/order-revision/dtos/CreateOrderRevision.dto';
 import { OrderRevisionService } from 'src/order-revision/services/order-revision/order-revision.service';
 
@@ -17,5 +24,10 @@ export class OrderRevisionController {
       userId,
       revisionPayload,
     );
+  }
+
+  @Get()
+  getAllRevisions() {
+    return this.orderRevisionService.getAllRevisions();
   }
 }
