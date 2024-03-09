@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  Response,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
 import { Profile } from 'src/entities/Profile';
@@ -46,7 +51,7 @@ export class ProfileService {
       where: { user: { userId } },
     });
     if (!profile) {
-      return null;
+      throw new NotFoundException('User profile not found');
     }
     return profile;
   }
