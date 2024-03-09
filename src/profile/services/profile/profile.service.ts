@@ -46,7 +46,7 @@ export class ProfileService {
       where: { user: { userId } },
     });
     if (!profile) {
-      throw new NotFoundException('Profile not found');
+      return null;
     }
     return profile;
   }

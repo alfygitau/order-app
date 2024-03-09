@@ -15,7 +15,6 @@ export class OrderRevisionService {
     private readonly userService: UsersService,
     private readonly orderService: OrderService,
   ) {}
-
   async createOrderRevision(
     orderId: number,
     userId: number,

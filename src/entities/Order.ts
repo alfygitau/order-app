@@ -63,6 +63,9 @@ export class Order {
   @Column()
   phone_number: string;
 
+  @Column({ type: 'bigint' })
+  public_id: string;
+
   @ManyToOne(() => Reference, { nullable: false })
   @JoinColumn()
   order_references: Reference;
@@ -73,9 +76,6 @@ export class Order {
 
   @Column()
   order_language: string;
-
-  @Column()
-  public_id: string;
 
   @Column()
   order_status: string;

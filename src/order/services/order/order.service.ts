@@ -35,10 +35,9 @@ export class OrderService {
   async createOrder(orderPayload: CreateOrderParams) {
     const now = new Date();
     const timestamp = now.toISOString().replace(/[-:.TZ]/g, '');
-    const public_id = `OD-${timestamp}-${this.getNextBigIntValue()}`;
+
     let newOrder = await this.orderRepository.create({
       ...orderPayload,
-      public_id,
     });
 
     return await this.orderRepository.save(newOrder);
