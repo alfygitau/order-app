@@ -50,7 +50,7 @@ export class ProfileService {
     if (!profile) {
       throw new NotFoundException('Profile not found');
     }
-    console.log(profile);
+
     if (profile) {
       profile.country = profilePayload?.country;
       profile.gender = profilePayload?.gender;
@@ -109,7 +109,6 @@ export class ProfileService {
     );
 
     const userProfile = await this.getUserProfile(userId);
-
     userProfile.profilePicture = profileUrl;
 
     // Save the profile to the database
