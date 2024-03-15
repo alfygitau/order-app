@@ -50,17 +50,16 @@ export class ProfileService {
     if (!profile) {
       throw new NotFoundException('Profile not found');
     }
-
     console.log(profile);
     if (profile) {
-      profile.country = profilePayload.country;
-      profile.gender = profilePayload.gender;
-      profile.academicLevel = profilePayload.academicLevel;
-      profile.address = profilePayload.address;
-      profile.bio = profilePayload.bio;
-      profile.language = profilePayload.language;
-      profile.phoneNumber = profilePayload.phoneNumber;
-      profile.profilePicture = profilePayload.profilePicture;
+      profile.country = profilePayload?.country;
+      profile.gender = profilePayload?.gender;
+      profile.academicLevel = profilePayload?.academicLevel;
+      profile.address = profilePayload?.address;
+      profile.bio = profilePayload?.bio;
+      profile.language = profilePayload?.language;
+      profile.phoneNumber = profilePayload?.phoneNumber;
+      profile.profilePicture = profilePayload?.profilePicture;
     }
     return this.profileRepository.save(profile);
   }
