@@ -42,6 +42,27 @@ export class ProfileService {
     return this.profileRepository.save(newProfile);
   }
 
+  async updateUserProfile(profileId: number, profilePayload: CreateProfile) {
+    const profile = await this.profileRepository.findOne({
+      where: { id: profileId },
+    });
+
+    if (!profile) {
+      throw new NotFoundException('Profile not found');
+    }
+
+    profile.country = profilePayload.country;
+    profile.gender = profilePayload.gender;
+    profile.academicLevel = profilePayload.academicLevel;
+    profile.address = profilePayload.address;
+    profile.bio = profilePayload.bio;
+    profile.language = profilePayload.language;
+    profile.phoneNumber = profilePayload.phoneNumber;
+    profile.profilePicture = profilePayload.profilePicture;
+
+    return this.profileRepository.save(profile);
+  }
+
   async findAllProfiles() {
     return await this.profileRepository.find();
   }

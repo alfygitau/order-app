@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   UploadedFile,
   UseGuards,
@@ -25,6 +26,14 @@ export class ProfileController {
   ) {
     const profile = this.profileService.createProfile(userId, userProfile);
     return profile;
+  }
+
+  @Patch(':profileId')
+  updateProfile(
+    @Param('profileId', ParseIntPipe) profileId: number,
+    profilePayload: CreateProfile,
+  ) {
+    return this.profileService.updateUserProfile(profileId, profilePayload);
   }
 
   @Get(':userId')
