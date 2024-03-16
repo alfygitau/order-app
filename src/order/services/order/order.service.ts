@@ -42,7 +42,6 @@ export class OrderService {
 
     return await this.orderRepository.save(newOrder);
   }
-
   getNextBigIntValue(): bigint {
     this.lastBigIntValue += BigInt(1);
     return this.lastBigIntValue;
