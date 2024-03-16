@@ -34,7 +34,7 @@ export class UsersController {
     return plainToClass(SerializedUser, user);
   }
 
-  @UseGuards(AdminAuthGuard)
+  // @UseGuards(AdminAuthGuard)
   @Get(':id')
   getUserById(@Param('id', ParseIntPipe) id: number) {
     const user = this.userService.findUserById(id);
