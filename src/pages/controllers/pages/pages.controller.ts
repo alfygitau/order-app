@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -17,8 +18,8 @@ export class PagesController {
 
   @Get()
   getAllPages(
-    @Query('page') page: number = 1,
-    @Query('itemsPerPage') itemsPerPage: number = 10,
+    @Query('page', ParseIntPipe) page: number = 1,
+    @Query('itemsPerPage', ParseIntPipe) itemsPerPage: number = 10,
   ) {
     return this.pagesService.findAllPages(page, itemsPerPage);
   }
