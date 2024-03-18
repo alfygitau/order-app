@@ -22,7 +22,7 @@ export class SubjectService {
     if (!page || !itemsPerPage) {
       return await this.subjectRepository.find();
     }
-    const skip = (page - 1) * itemsPerPage;
+    const skip = (Number(page) - 1) * Number(itemsPerPage);
 
     const orderSubjects = await this.subjectRepository.find({
       take: itemsPerPage,

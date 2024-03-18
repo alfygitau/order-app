@@ -23,7 +23,7 @@ export class OrderCategoryService {
     if (!page || !itemsPerPage) {
       return await this.orderCategoryRepository.find();
     }
-    const skip = (page - 1) * itemsPerPage;
+    const skip = (Number(page) - 1) * Number(itemsPerPage);
 
     const orderCategories = await this.orderCategoryRepository.find({
       take: itemsPerPage,

@@ -22,7 +22,7 @@ export class PagesService {
     if (!page || !itemsPerPage) {
       return await this.pagesRepository.find();
     }
-    const skip = (page - 1) * itemsPerPage;
+    const skip = (Number(page) - 1) * Number(itemsPerPage);
     const orderPages = await this.pagesRepository.find({
       take: itemsPerPage,
       skip,

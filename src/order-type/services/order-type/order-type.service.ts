@@ -30,7 +30,7 @@ export class OrderTypeService {
     if (!page || !itemsPerPage) {
       return await this.orderTypeRepository.find();
     }
-    const skip = (page - 1) * itemsPerPage;
+    const skip = (Number(page) - 1) * Number(itemsPerPage);
     const orderTypes = await this.orderTypeRepository.find({
       take: itemsPerPage,
       skip,

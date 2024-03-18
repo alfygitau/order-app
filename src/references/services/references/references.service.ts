@@ -24,7 +24,7 @@ export class ReferencesService {
     if (!page || !itemsPerPage) {
       return await this.referencesRepository.find();
     }
-    const skip = (page - 1) * itemsPerPage;
+    const skip = (Number(page) - 1) * Number(itemsPerPage);
 
     const orderReferences = await this.referencesRepository.find({
       take: itemsPerPage,

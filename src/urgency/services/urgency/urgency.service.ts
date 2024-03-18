@@ -22,7 +22,7 @@ export class UrgencyService {
     if (!page || !itemsPerPage) {
       return await this.urgencyRepository.find();
     }
-    const skip = (page - 1) * itemsPerPage;
+    const skip = (Number(page) - 1) * Number(itemsPerPage);
 
     const orderDeadlines = await this.urgencyRepository.find({
       take: itemsPerPage,
