@@ -27,10 +27,11 @@ export class AcademicLevelService {
     const academicLevel = await this.academicLevelRepository.findOne({
       where: { academic_level_id: id },
     });
+    console.log(academicLevel);
+    
     if (!academicLevel) {
       throw new NotFoundException(`Academic level with ID '${id}' not found.`);
     }
-
     // Apply updates to the entity
     Object.assign(academicLevel, updatePayload);
 
@@ -38,7 +39,6 @@ export class AcademicLevelService {
     const updatedAcademicLevel = await this.academicLevelRepository.save(
       academicLevel,
     );
-
     return updatedAcademicLevel;
   }
 
