@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreateOrderType } from 'src/order-type/dtos/CreateOrderType.dto';
 import { OrderTypeService } from 'src/order-type/services/order-type/order-type.service';
@@ -21,8 +22,11 @@ export class OrderTypeController {
   }
 
   @Get()
-  getAllOrderTypes() {
-    return this.orderTypeService.getAllOrderTypes();
+  getAllOrderTypes(
+    @Query('page') page: number = 1,
+    @Query('itemsPerPage') itemsPerPage: number = 10,
+  ) {
+    return this.orderTypeService.getAllOrderTypes(page, itemsPerPage);
   }
 
   @Get(':orderTypeId')
