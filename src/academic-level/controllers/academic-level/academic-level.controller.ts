@@ -28,7 +28,7 @@ export class AcademicLevelController {
   @Patch(':id')
   updateAcademicLevel(
     @Param('id', ParseIntPipe) id: number,
-    updatePayload: CreateAcademicLevel,
+    @Body() updatePayload: CreateAcademicLevel,
   ) {
     return this.academicLevelService.updateAcademicLevel(id, updatePayload);
   }
