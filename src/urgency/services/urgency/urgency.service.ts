@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Urgency } from 'src/entities/Urgency';
 import { CreateDeadlineParams } from 'src/utils/types';
@@ -29,5 +29,29 @@ export class UrgencyService {
     const itemsCount = await this.urgencyRepository.count();
 
     return { orderDeadlines, itemsPerPage, page, itemsCount };
+  }
+
+  async updateOrderDeadline(id, updatePayload) {
+    const orderUrgency = await this.urgencyRepository.findOne({
+      where: { urgency_id: id },
+    });
+
+    if (!orderUrgency) {
+      throw new NotFoundException(`Academic level with ID '${id}' not found.`);
+    }
+    // Apply updates to the entity
+    Object.assign(orderUrgency, updatePayload);
+
+    // Save the updated entity
+    const updatedOrderUrgency = await this.urgencyRepository.save(orderUrgency);
+    return updatedOrderUrgency;
+  }
+
+  async deleteOrderUrgency(id: number) {
+    const orderUrgency = await this.urgencyRepository.findOne({
+      where: { urgency_id: id },
+    });
+
+    return this.urgencyRepository.remove(orderUrgency);
   }
 }

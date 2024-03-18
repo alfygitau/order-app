@@ -1,8 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
@@ -24,5 +27,18 @@ export class UrgencyController {
   @Post('create')
   createOrderDeadline(@Body() orderDealinePayload: CreateOrderDeadline) {
     return this.urgencyService.createDeadline(orderDealinePayload);
+  }
+
+  @Patch(':id')
+  updateOrderUrgency(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatePayload: CreateOrderDeadline,
+  ) {
+    return this.urgencyService.updateOrderDeadline(id, updatePayload);
+  }
+
+  @Delete(':id')
+  deleteOrderUrgency(@Param('id') id: number) {
+    return this.urgencyService.deleteOrderUrgency(id);
   }
 }
