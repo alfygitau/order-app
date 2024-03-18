@@ -17,8 +17,14 @@ export class PagesService {
     return this.pagesRepository.save(newpages);
   }
 
-  async findAllPages() {
-    return await this.pagesRepository.find();
+  async findAllPages(page: number = 1, itemsPerPage: number = 10) {
+    const skip = (page - 1) * itemsPerPage;
+    const orderPages = await this.pagesRepository.find({
+      take: itemsPerPage,
+      skip,
+    });
+
+    return { orderPages, itemsPerPage, page, itemsCount: orderPages.length };
   }
 
   async findPageById(pageId: number) {

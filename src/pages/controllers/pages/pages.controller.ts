@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreatePages } from 'src/pages/dtos/CreatePages.dto';
 import { PagesService } from 'src/pages/services/pages/pages.service';
@@ -15,8 +16,11 @@ export class PagesController {
   constructor(private readonly pagesService: PagesService) {}
 
   @Get()
-  getAllPages() {
-    return this.pagesService.findAllPages();
+  getAllPages(
+    @Query('page') page: number = 1,
+    @Query('itemsPerPage') itemsPerPage: number = 10,
+  ) {
+    return this.pagesService.findAllPages(page, itemsPerPage);
   }
 
   @Post('create')
