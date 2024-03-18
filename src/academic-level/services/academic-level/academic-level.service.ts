@@ -24,24 +24,18 @@ export class AcademicLevelService {
   }
 
   async updateAcademicLevel(id, updatePayload: CreateAcademicLevelParams) {
-    // Find the academic level by ID
-    const academicLevel = await this.academicLevelRepository.findOne({
+    await this.academicLevelRepository.update(
+      { academic_level_id: id },
+      { ...updatePayload },
+    );
+    const updatedAcademicLevel = await this.academicLevelRepository.findOne({
       where: { academic_level_id: id },
     });
 
-    // If academic level not found, throw NotFoundException
-    if (!academicLevel) {
-      throw new NotFoundException('Academic level not found');
+    if (!updatedAcademicLevel) {
+      throw new NotFoundException(`Academic level with ID '${id}' not found.`);
     }
-
-    academicLevel.academic_level_code = updatePayload?.academic_level_code;
-    academicLevel.academic_level_description =
-      updatePayload?.academic_level_description;
-    academicLevel.academic_level_name = updatePayload?.academic_level_name;
-    academicLevel.academic_level_value = updatePayload?.academic_level_value;
-
-    // Save the changes
-    return this.academicLevelRepository.save(academicLevel);
+    return updatedAcademicLevel;
   }
 
   async deleteAcademicLevel(id: number): Promise<void> {
