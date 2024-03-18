@@ -24,17 +24,21 @@ export class AcademicLevelService {
   }
 
   async updateAcademicLevel(id, updatePayload: CreateAcademicLevelParams) {
-    await this.academicLevelRepository.update(
-      { academic_level_id: id },
-      { ...updatePayload },
-    );
-    const updatedAcademicLevel = await this.academicLevelRepository.findOne({
+    const academicLevel = await this.academicLevelRepository.findOne({
       where: { academic_level_id: id },
     });
-
-    if (!updatedAcademicLevel) {
+    if (!academicLevel) {
       throw new NotFoundException(`Academic level with ID '${id}' not found.`);
     }
+
+    // Apply updates to the entity
+    Object.assign(academicLevel, updatePayload);
+
+    // Save the updated entity
+    const updatedAcademicLevel = await this.academicLevelRepository.save(
+      academicLevel,
+    );
+
     return updatedAcademicLevel;
   }
 
