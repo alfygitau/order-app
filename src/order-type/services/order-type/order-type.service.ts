@@ -25,15 +25,11 @@ export class OrderTypeService {
     return order_type;
   }
 
-  async getAllOrderTypes(
-    page: number = 1,
-    itemsPerPage: number = 10,
-  ): Promise<{
-    orderTypes: OrderType[];
-    page: number;
-    itemsPerPage: number;
-    itemsCount: number;
-  }> {
+  async getAllOrderTypes(page: number, itemsPerPage: number) {
+    // If page and itemsPerPage are not provided, fetch all data
+    if (!page || !itemsPerPage) {
+      return await this.orderTypeRepository.find();
+    }
     const skip = (page - 1) * itemsPerPage;
     const orderTypes = await this.orderTypeRepository.find({
       take: itemsPerPage,

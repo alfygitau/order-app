@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -17,10 +18,14 @@ export class UrgencyController {
   constructor(private readonly urgencyService: UrgencyService) {}
 
   @Get()
-  getAllDeadlines(
+  async getAllDeadlines(
     @Query('page', ParseIntPipe) page: number = 1,
     @Query('itemsPerPage', ParseIntPipe) itemsPerPage: number = 10,
   ) {
+    // Ensure that both page and itemsPerPage are positive numbers
+    if (page < 1 || itemsPerPage < 1) {
+      throw new BadRequestException('Invalid page or itemsPerPage');
+    }
     return this.urgencyService.findAllDeadlines(page, itemsPerPage);
   }
 

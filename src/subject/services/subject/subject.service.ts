@@ -17,7 +17,11 @@ export class SubjectService {
     return await this.subjectRepository.save(newSubject);
   }
 
-  async findAllSubjects(page: number = 1, itemsPerPage: number = 10) {
+  async findAllSubjects(page: number, itemsPerPage: number) {
+    // If page and itemsPerPage are not provided, fetch all data
+    if (!page || !itemsPerPage) {
+      return await this.subjectRepository.find();
+    }
     const skip = (page - 1) * itemsPerPage;
 
     const orderSubjects = await this.subjectRepository.find({

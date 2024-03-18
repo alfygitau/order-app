@@ -18,7 +18,11 @@ export class OrderCategoryService {
     return await this.orderCategoryRepository.save(newOrderCategory);
   }
 
-  async findAllOrderCategories(page: number = 1, itemsPerPage: number = 10) {
+  async findAllOrderCategories(page: number, itemsPerPage: number) {
+    // If page and itemsPerPage are not provided, fetch all data
+    if (!page || !itemsPerPage) {
+      return await this.orderCategoryRepository.find();
+    }
     const skip = (page - 1) * itemsPerPage;
 
     const orderCategories = await this.orderCategoryRepository.find({

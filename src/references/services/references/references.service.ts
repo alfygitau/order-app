@@ -19,7 +19,11 @@ export class ReferencesService {
     return await this.referencesRepository.save(newReference);
   }
 
-  async fetchAllReferences(page: number = 1, itemsPerPage: number = 10) {
+  async fetchAllReferences(page: number, itemsPerPage: number) {
+    // If page and itemsPerPage are not provided, fetch all data
+    if (!page || !itemsPerPage) {
+      return await this.referencesRepository.find();
+    }
     const skip = (page - 1) * itemsPerPage;
 
     const orderReferences = await this.referencesRepository.find({
