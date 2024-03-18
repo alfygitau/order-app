@@ -17,7 +17,17 @@ export class UrgencyService {
     return await this.urgencyRepository.save(newDeadline);
   }
 
-  async findAllDeadlines() {
-    return await this.urgencyRepository.find();
+  async findAllDeadlines(page: number = 1, itemsPerPage: number = 10) {
+    const skip = (page - 1) * itemsPerPage;
+
+    const orderDeadlines = await this.urgencyRepository.find({
+      take: itemsPerPage,
+      skip,
+    });
+
+    // Query to count the total number of order types
+    const itemsCount = await this.urgencyRepository.count();
+
+    return { orderDeadlines, itemsPerPage, page, itemsCount };
   }
 }
