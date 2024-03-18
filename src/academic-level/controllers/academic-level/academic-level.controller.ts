@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CreateAcademicLevel } from 'src/academic-level/dtos/CreateAcademicLevel.dto';
 import { AcademicLevelService } from 'src/academic-level/services/academic-level/academic-level.service';
 
@@ -14,5 +23,18 @@ export class AcademicLevelController {
   @Post('create')
   createAcademicLevel(@Body() academicLevelPayload: CreateAcademicLevel) {
     return this.academicLevelService.createAcademicLevel(academicLevelPayload);
+  }
+
+  @Patch(':id')
+  updateAcademicLevel(
+    @Param('id', ParseIntPipe) id: number,
+    updatePayload: CreateAcademicLevel,
+  ) {
+    return this.academicLevelService.updateAcademicLevel(id, updatePayload);
+  }
+
+  @Delete(':id')
+  removeAcademicLevel(@Param('id', ParseIntPipe) id: number) {
+    return this.academicLevelService.deleteAcademicLevel(id);
   }
 }

@@ -25,7 +25,9 @@ export class AcademicLevelService {
 
   async updateAcademicLevel(id, updatePayload: CreateAcademicLevelParams) {
     // Find the academic level by ID
-    const academicLevel = await this.academicLevelRepository.findOne(id);
+    const academicLevel = await this.academicLevelRepository.findOne({
+      where: { academic_level_id: id },
+    });
 
     // If academic level not found, throw NotFoundException
     if (!academicLevel) {
@@ -40,5 +42,12 @@ export class AcademicLevelService {
 
     // Save the changes
     return this.academicLevelRepository.save(academicLevel);
+  }
+
+  async deleteAcademicLevel(id: number): Promise<void> {
+    const academicLevel = await this.academicLevelRepository.findOne({
+      where: { academic_level_id: id },
+    });
+    await this.academicLevelRepository.remove(academicLevel);
   }
 }
