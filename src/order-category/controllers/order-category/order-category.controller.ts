@@ -4,8 +4,10 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreateOrderCategory } from 'src/order-category/dtos/CreateOrderCategory.dto';
 import { OrderCategoryService } from 'src/order-category/services/order-category/order-category.service';
@@ -15,8 +17,11 @@ export class OrderCategoryController {
   constructor(private readonly orderCategoryService: OrderCategoryService) {}
 
   @Get()
-  getAllOrderCategories() {
-    return this.orderCategoryService.findAllOrderCategories();
+  getAllOrderCategories(
+    @Query('page', ParseIntPipe) page: number = 1,
+    @Query('itemsPerPage', ParseIntPipe) itemsPerPage: number = 10,
+  ) {
+    return this.orderCategoryService.findAllOrderCategories(page, itemsPerPage);
   }
 
   @Post('create')

@@ -18,8 +18,17 @@ export class OrderCategoryService {
     return await this.orderCategoryRepository.save(newOrderCategory);
   }
 
-  async findAllOrderCategories() {
-    return await this.orderCategoryRepository.find();
+  async findAllOrderCategories(page: number = 1, itemsPerPage: number = 10) {
+    const skip = (page - 1) * itemsPerPage;
+
+    const orderCategories = await this.orderCategoryRepository.find({
+      take: itemsPerPage,
+      skip,
+    });
+
+    // Query to count the total number of order types
+    const itemsCount = await this.orderCategoryRepository.count();
+    return { orderCategories, itemsPerPage, page, itemsCount };
   }
 
   async findOrderCategoryById(orderCategoryId: number) {

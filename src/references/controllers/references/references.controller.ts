@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  ParseIntPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateReference } from 'src/references/dtos/CreateReference.dto';
 import { ReferencesService } from 'src/references/services/references/references.service';
 
@@ -7,8 +14,11 @@ export class ReferencesController {
   constructor(private readonly referencesService: ReferencesService) {}
 
   @Get()
-  getAllReferences() {
-    return this.referencesService.fetchAllReferences();
+  getAllReferences(
+    @Query('page', ParseIntPipe) page: number = 1,
+    @Query('itemsPerPage', ParseIntPipe) itemsPerPage: number = 10,
+  ) {
+    return this.referencesService.fetchAllReferences(page, itemsPerPage);
   }
 
   @Post('create')
