@@ -28,14 +28,19 @@ export class OrderTypeService {
   async getAllOrderTypes(
     page: number = 1,
     itemsPerPage: number = 10,
-  ): Promise<{ orderTypes: OrderType[]; page: number; itemsPerPage: number }> {
+  ): Promise<{
+    orderTypes: OrderType[];
+    page: number;
+    itemsPerPage: number;
+    itemsCount: number;
+  }> {
     const skip = (page - 1) * itemsPerPage;
     const orderTypes = await this.orderTypeRepository.find({
       take: itemsPerPage,
       skip,
     });
 
-    return { orderTypes, page, itemsPerPage };
+    return { orderTypes, page, itemsPerPage, itemsCount: orderTypes.length };
   }
 
   async updateOrderType(orderTypeId: number, orderTypeData: OrderTypeParams) {
