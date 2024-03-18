@@ -32,7 +32,11 @@ export class SubjectService {
 
     Object.assign(orderSubject, payload);
 
-    return this.subjectRepository.save(orderSubject);
+    // Save the updated entity
+    const updatedOrderSubject = await this.subjectRepository.save(
+      orderSubject,
+    );
+    return updatedOrderSubject;
   }
 
   async deleteOrderSubject(id: number) {
