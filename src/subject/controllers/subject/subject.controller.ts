@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreateSubject } from 'src/subject/dtos/CreateSubject.dto';
 import { SubjectService } from 'src/subject/services/subject/subject.service';
@@ -16,8 +17,11 @@ export class SubjectController {
   constructor(private readonly subjectService: SubjectService) {}
 
   @Get()
-  getAllSubjects() {
-    return this.subjectService.findAllSubjects();
+  getAllSubjects(
+    @Query('page', ParseIntPipe) page: number = 1,
+    @Query('itemsPerPage', ParseIntPipe) itemsPerPage: number = 10,
+  ) {
+    return this.subjectService.findAllSubjects(page, itemsPerPage);
   }
 
   @Post('create')

@@ -17,8 +17,18 @@ export class SubjectService {
     return await this.subjectRepository.save(newSubject);
   }
 
-  async findAllSubjects() {
-    return await this.subjectRepository.find();
+  async findAllSubjects(page: number = 1, itemsPerPage: number = 10) {
+    const skip = (page - 1) * itemsPerPage;
+
+    const orderSubjects = await this.subjectRepository.find({
+      take: itemsPerPage,
+      skip,
+    });
+
+    // Query to count the total number of order types
+    const itemsCount = await this.subjectRepository.count();
+
+    return { orderSubjects, itemsPerPage, page, itemsCount };
   }
 
   async updateOrderSubject(id, payload: CreateSubjectParams) {
@@ -33,9 +43,7 @@ export class SubjectService {
     Object.assign(orderSubject, payload);
 
     // Save the updated entity
-    const updatedOrderSubject = await this.subjectRepository.save(
-      orderSubject,
-    );
+    const updatedOrderSubject = await this.subjectRepository.save(orderSubject);
     return updatedOrderSubject;
   }
 
