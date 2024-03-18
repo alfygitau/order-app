@@ -28,7 +28,8 @@ export class AcademicLevelService {
       where: { academic_level_id: id },
     });
     console.log(academicLevel);
-    
+    console.log(updatePayload);
+
     if (!academicLevel) {
       throw new NotFoundException(`Academic level with ID '${id}' not found.`);
     }
