@@ -18,8 +18,8 @@ export class PagesController {
 
   @Get()
   getAllPages(
-    @Query('page', ParseIntPipe) page?: number,
-    @Query('itemsPerPage', ParseIntPipe) itemsPerPage?: number,
+    @Query('page') page?: number,
+    @Query('itemsPerPage') itemsPerPage?: number,
   ) {
     return this.pagesService.findAllPages(page, itemsPerPage);
   }

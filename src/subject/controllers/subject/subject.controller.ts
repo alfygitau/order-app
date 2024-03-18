@@ -18,8 +18,8 @@ export class SubjectController {
 
   @Get()
   getAllSubjects(
-    @Query('page', ParseIntPipe) page?: number,
-    @Query('itemsPerPage', ParseIntPipe) itemsPerPage?: number,
+    @Query('page') page?: number,
+    @Query('itemsPerPage') itemsPerPage?: number,
   ) {
     return this.subjectService.findAllSubjects(page, itemsPerPage);
   }
