@@ -24,7 +24,10 @@ export class PagesService {
       skip,
     });
 
-    return { orderPages, itemsPerPage, page, itemsCount: orderPages.length };
+    // Query to count the total number of order types
+    const itemsCount = await this.pagesRepository.count();
+
+    return { orderPages, itemsPerPage, page, itemsCount };
   }
 
   async findPageById(pageId: number) {

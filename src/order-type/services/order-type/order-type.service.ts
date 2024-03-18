@@ -40,7 +40,10 @@ export class OrderTypeService {
       skip,
     });
 
-    return { orderTypes, page, itemsPerPage, itemsCount: orderTypes.length };
+    // Query to count the total number of order types
+    const itemsCount = await this.orderTypeRepository.count();
+
+    return { orderTypes, page, itemsPerPage, itemsCount };
   }
 
   async updateOrderType(orderTypeId: number, orderTypeData: OrderTypeParams) {
