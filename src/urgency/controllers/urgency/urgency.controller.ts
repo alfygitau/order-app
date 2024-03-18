@@ -19,8 +19,8 @@ export class UrgencyController {
 
   @Get()
   async getAllDeadlines(
-    @Query('page', ParseIntPipe) page: number = 1,
-    @Query('itemsPerPage', ParseIntPipe) itemsPerPage: number = 10,
+    @Query('page', ParseIntPipe) page?: number,
+    @Query('itemsPerPage', ParseIntPipe) itemsPerPage?: number,
   ) {
     // Ensure that both page and itemsPerPage are positive numbers
     if (page < 1 || itemsPerPage < 1) {

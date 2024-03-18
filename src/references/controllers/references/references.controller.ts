@@ -15,8 +15,8 @@ export class ReferencesController {
 
   @Get()
   getAllReferences(
-    @Query('page', ParseIntPipe) page: number = 1,
-    @Query('itemsPerPage', ParseIntPipe) itemsPerPage: number = 10,
+    @Query('page', ParseIntPipe) page?: number,
+    @Query('itemsPerPage', ParseIntPipe) itemsPerPage?: number,
   ) {
     return this.referencesService.fetchAllReferences(page, itemsPerPage);
   }

@@ -23,8 +23,8 @@ export class OrderTypeController {
 
   @Get()
   getAllOrderTypes(
-    @Query('page', ParseIntPipe) page: number = 1,
-    @Query('itemsPerPage', ParseIntPipe) itemsPerPage: number = 10,
+    @Query('page', ParseIntPipe) page?: number,
+    @Query('itemsPerPage', ParseIntPipe) itemsPerPage?: number,
   ) {
     return this.orderTypeService.getAllOrderTypes(page, itemsPerPage);
   }
