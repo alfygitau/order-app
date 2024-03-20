@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
@@ -24,5 +26,13 @@ export class ReferencesController {
   @Post('create')
   createAReference(@Body() referencePayload: CreateReference) {
     return this.referencesService.createReference(referencePayload);
+  }
+
+  @Patch(':id')
+  updateReference(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatePayload: CreateReference,
+  ) {
+    return this.referencesService.updateReference(id, updatePayload);
   }
 }

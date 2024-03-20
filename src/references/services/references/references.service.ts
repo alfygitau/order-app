@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Reference } from 'src/entities/References';
 import { CreateReferences } from 'src/utils/types';
@@ -35,5 +35,17 @@ export class ReferencesService {
     const itemsCount = await this.referencesRepository.count();
 
     return { orderReferences, page, itemsPerPage, itemsCount };
+  }
+
+  async updateReference(id: number, updatePayload: CreateReferences) {
+    const reference = await this.referencesRepository.findOne({
+      where: { reference_id: id },
+    });
+
+    if (!reference) throw new NotFoundException('Reference not found');
+
+    Object.assign(reference, updatePayload);
+
+    return this.referencesRepository.save(reference);
   }
 }
