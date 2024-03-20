@@ -43,4 +43,11 @@ export class OrderRevisionService {
       relations: ['order'],
     });
   }
+
+  async getOrderRevisionsByOrderId(orderId: number) {
+    return this.orderRevisionRepository.find({
+      where: { order: { order_id: orderId } },
+      relations: ['order'],
+    });
+  }
 }

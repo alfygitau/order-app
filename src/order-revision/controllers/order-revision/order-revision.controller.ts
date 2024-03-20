@@ -35,4 +35,9 @@ export class OrderRevisionController {
   getRevisionById(@Param('revisionId', ParseIntPipe) revisionId: number) {
     return this.orderRevisionService.getOrderRevisionById(revisionId);
   }
+
+  @Get(':orderId/revisions')
+  async getOrderRevisionsByOrderId(@Param('orderId') orderId: number) {
+    return await this.orderRevisionService.getOrderRevisionsByOrderId(orderId);
+  }
 }
