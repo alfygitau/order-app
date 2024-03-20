@@ -30,8 +30,10 @@ export class OrderController {
   getAllOrders(
     @Query('userId') userId?: number,
     @Query('status') status?: string,
+    @Query('page') page?: number,
+    @Query('itemsPerPage') itemsPerPage?: number,
   ) {
-    return this.orderService.getAllOrders(userId, status);
+    return this.orderService.getAllOrders(userId, status, page, itemsPerPage);
   }
 
   @Get('/cancelled-orders')

@@ -47,27 +47,74 @@ export class OrderService {
     return this.lastBigIntValue;
   }
 
-  async getAllOrders(userId, status) {
-    return this.orderRepository.find({
-      where: {
-        user: { userId },
-        order_status: status,
-      },
-      relations: [
-        'order_type',
-        'order_category',
-        'order_subject',
-        'academic_level',
-        'order_pages',
-        'order_style',
-        'order_deadline',
-        'order_references',
-        'order_messages',
-        'order_files',
-        'user',
-      ],
-    });
+  async getAllOrders(
+    userId: number,
+    status: string,
+    page: number,
+    itemsPerPage: number,
+  ) {
+    if (!page || !itemsPerPage) {
+      return this.orderRepository.find({
+        where: {
+          user: { userId },
+          order_status: status,
+        },
+        relations: [
+          'order_type',
+          'order_category',
+          'order_subject',
+          'academic_level',
+          'order_pages',
+          'order_style',
+          'order_deadline',
+          'order_references',
+          'order_messages',
+          'order_files',
+          'user',
+        ],
+      });
+    }
+
+    const skip = (page - 1) * itemsPerPage;
+
+    const [orders, itemsCount] = await Promise.all([
+      this.orderRepository.find({
+        take: itemsPerPage,
+        skip,
+        where: {
+          user: { userId },
+          order_status: status,
+        },
+        relations: [
+          'order_type',
+          'order_category',
+          'order_subject',
+          'academic_level',
+          'order_pages',
+          'order_style',
+          'order_deadline',
+          'order_references',
+          'order_messages',
+          'order_files',
+          'user',
+        ],
+      }),
+      this.orderRepository.count({
+        where: {
+          user: { userId },
+          order_status: status,
+        },
+      }),
+    ]);
+
+    return {
+      orders,
+      itemsCount,
+      itemsPerPage: Number(itemsPerPage),
+      page: Number(page),
+    };
   }
+
   async assignOrder(orderId: number) {
     let order = await this.getOrderById(orderId);
     // Check if the order exists
