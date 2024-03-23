@@ -25,9 +25,6 @@ export class ReportService {
     const timeDifferenceInDays = Math.ceil(
       Math.abs(endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24),
     );
-    const timeDifferenceInHours = Math.ceil(
-      Math.abs(endDate.getTime() - startDate.getTime()) / (1000 * 3600),
-    );
 
     let dateFormat;
     let groupBy;
@@ -58,25 +55,7 @@ export class ReportService {
       .orderBy('time', 'ASC')
       .getRawMany();
 
-    // Create an array of all intervals between startDate and endDate
-    const intervals = [];
-    let currentDate = new Date(startDate);
-    while (currentDate <= endDate) {
-      intervals.push(currentDate.toISOString());
-      if (timeDifferenceInDays <= 1) {
-        currentDate = new Date(currentDate.getTime() + 60 * 60 * 1000); // Add 1 hour
-      } else {
-        currentDate.setDate(currentDate.getDate() + 1); // Add 1 day
-      }
-    }
-
-    // Merge the result with the intervals to include all intervals even if the count is zero
-    const mergedData = intervals.map((interval) => {
-      const existingData = accountsData.find((data) => data.time === interval);
-      return existingData || { time: interval, number_of_accounts: 0 };
-    });
-
-    return mergedData;
+    return accountsData;
   }
 
   async getOrderInformation(
