@@ -20,7 +20,6 @@ export class ManualOrder {
   manual_order_comments: string;
 
   @Column({ type: 'simple-array', nullable: true })
-
   manual_order_files: string[];
 
   @CreateDateColumn({ type: 'datetime' })
