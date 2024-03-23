@@ -4,7 +4,8 @@ import { ReportService } from './report.service';
 @Controller('report')
 export class ReportController {
   constructor(private readonly reportService: ReportService) {}
-  @Get("users")
+
+  @Get('users')
   async generateUserReport(
     @Query('startTime') startTime: string,
     @Query('endTime') endTime: string,
@@ -12,5 +13,15 @@ export class ReportController {
     const startDate = new Date(startTime);
     const endDate = new Date(endTime);
     return await this.reportService.getUserInformation(startDate, endDate);
+  }
+
+  @Get('orders')
+  async generateOrderReport(
+    @Query('startTime') startTime: string,
+    @Query('endTime') endTime: string,
+  ): Promise<any> {
+    const startDate = new Date(startTime);
+    const endDate = new Date(endTime);
+    return await this.reportService.getOrderInformation(startDate, endDate);
   }
 }
