@@ -25,25 +25,24 @@ export class ReportService {
     const timeDifferenceInDays = Math.ceil(
       Math.abs(endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24),
     );
+    const timeDifferenceInHours = Math.ceil(
+      Math.abs(endDate.getTime() - startDate.getTime()) / (1000 * 3600),
+    );
 
     let dateFormat;
     let groupBy;
-    let interval;
     if (timeDifferenceInDays <= 1) {
       // Within a day: group by hour
       dateFormat = '%Y-%m-%d %H:00';
       groupBy = 'DATE_FORMAT(user.created_at, "%Y-%m-%d %H:00:00")';
-      interval = 'hour';
     } else if (timeDifferenceInDays <= 30) {
       // Within a month: group by day
       dateFormat = '%Y-%m-%d';
       groupBy = 'DATE(user.created_at)';
-      interval = 'day';
     } else {
       // Greater than a month: group by month
       dateFormat = '%Y-%m';
       groupBy = 'DATE_FORMAT(user.created_at, "%Y-%m-01")';
-      interval = 'month';
     }
 
     const accountsData = await this.userRepository
@@ -59,40 +58,25 @@ export class ReportService {
       .orderBy('time', 'ASC')
       .getRawMany();
 
-    // Create a set of all intervals within the selected range
-    const intervalsSet = new Set();
+    // Create an array of all intervals between startDate and endDate
+    const intervals = [];
     let currentDate = new Date(startDate);
     while (currentDate <= endDate) {
-      intervalsSet.add(currentDate.toISOString());
-      currentDate = this.incrementInterval(currentDate, interval);
+      intervals.push(currentDate.toISOString());
+      if (timeDifferenceInDays <= 1) {
+        currentDate = new Date(currentDate.getTime() + 60 * 60 * 1000); // Add 1 hour
+      } else {
+        currentDate.setDate(currentDate.getDate() + 1); // Add 1 day
+      }
     }
 
-    // Merge the result with intervalsSet to ensure all intervals are included
-    const mergedData = Array.from(intervalsSet).map((intervalTime) => {
-      const existingData = accountsData.find(
-        (data) => data.time === intervalTime,
-      );
-      return existingData || { time: intervalTime, number_of_accounts: 0 };
+    // Merge the result with the intervals to include all intervals even if the count is zero
+    const mergedData = intervals.map((interval) => {
+      const existingData = accountsData.find((data) => data.time === interval);
+      return existingData || { time: interval, number_of_accounts: 0 };
     });
 
     return mergedData;
-  }
-
-  private incrementInterval(date: Date, interval: string): Date {
-    switch (interval) {
-      case 'hour':
-        return new Date(date.getTime() + 60 * 60 * 1000); // Add 1 hour
-      case 'day':
-        return new Date(date.getTime() + 24 * 60 * 60 * 1000); // Add 1 day
-      case 'month':
-        return new Date(
-          date.getFullYear(),
-          date.getMonth() + 1,
-          date.getDate(),
-        ); // Add 1 month
-      default:
-        return date;
-    }
   }
 
   async getOrderInformation(
