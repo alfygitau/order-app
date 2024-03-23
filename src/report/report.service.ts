@@ -21,7 +21,7 @@ export class ReportService {
   async getUserInformation(
     startDate: Date,
     endDate: Date,
-  ): Promise<{ time: any; number_of_accounts: number }[]> {
+  ): Promise<{ time: any; number_of_user_accounts: number }[]> {
     const timeDifferenceInDays = Math.ceil(
       Math.abs(endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24),
     );
@@ -71,10 +71,10 @@ export class ReportService {
     // Merge the result with timestampsSet to ensure all timestamps are included
     const mergedData = Array.from(timestampsSet).map((timestamp) => {
       const existingData = accountsData.find((data) => data.time === timestamp);
-      const number_of_accounts = existingData
+      const number_of_user_accounts = existingData
         ? parseInt(existingData.number_of_accounts, 10)
         : 0; // Convert to number
-      return { time: timestamp, number_of_accounts };
+      return { time: timestamp, number_of_user_accounts };
     });
 
     return mergedData;
