@@ -15,11 +15,12 @@ export class ManualOrderController {
 
   @Post('create')
   @UseInterceptors(FilesInterceptor('manual_order_files'))
-  createManualOrder(@UploadedFiles() files: Express.Multer.File[]) {
+  createManualOrder(
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body() manualOrderPayload: CreateManualOrder,
+  ) {
     console.log(files);
-    const manualOrderPayload = files[0]
-      ? JSON.parse(files[0].buffer.toString())
-      : {};
+    console.log(manualOrderPayload);
     return this.manualOrderService.createManualOrder(manualOrderPayload, files);
   }
 }
