@@ -40,6 +40,7 @@ import { PaypalModule } from './paypal/paypal.module';
 import { ManualOrder } from './entities/ManualOrder';
 import { ManualOrderModule } from './manual-order/manual-order.module';
 import { ManualOrderFilesModule } from './manual-order-files/manual-order-files.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
@@ -93,6 +94,7 @@ import { ManualOrderFilesModule } from './manual-order-files/manual-order-files.
     PaypalModule,
     ManualOrderModule,
     ManualOrderFilesModule,
+    ReportModule,
   ],
   controllers: [AppController],
   providers: [AppService],
