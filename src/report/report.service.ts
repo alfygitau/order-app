@@ -116,6 +116,16 @@ export class ReportService {
       groupBy = 'DATE_FORMAT(order.created_at, "%Y-%m-01")';
     }
 
+    const timestampsSet = new Set();
+    let currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+      timestampsSet.add(this.formatDate(currentDate, dateFormat));
+      if (timeDifferenceInDays <= 1) {
+        currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000); // Add 1 day
+      } else {
+        currentDate.setDate(currentDate.getDate() + 1); // Add 1 day
+      }
+    }
     const ordersData = await this.orderRepository
       .createQueryBuilder('order')
       .select(
@@ -129,6 +139,14 @@ export class ReportService {
       .orderBy('time', 'ASC')
       .getRawMany();
 
-    return ordersData;
+    const mergedData = Array.from(timestampsSet).map((timestamp) => {
+      const existingData = ordersData.find((data) => data.time === timestamp);
+      const number_of_orders = existingData
+        ? parseInt(existingData.number_of_orders, 10)
+        : 0;
+      return existingData || { time: timestamp, number_of_orders };
+    });
+
+    return mergedData;
   }
 }
