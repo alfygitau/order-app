@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
+  Query,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -15,7 +17,6 @@ export class ManualOrderController {
 
   @Post('create')
   createManualOrder(@Body() manualOrderPayload: CreateManualOrder) {
-    
     return this.manualOrderService.createManualOrder(manualOrderPayload);
   }
 
@@ -23,5 +24,13 @@ export class ManualOrderController {
   @UseInterceptors(FilesInterceptor('manual_order_files'))
   uploadManualOrderFiles(@UploadedFiles() files: Express.Multer.File[]) {
     return this.manualOrderService.uploadManualOrderFiles(files);
+  }
+
+  @Get('orders')
+  getAllManualOrders(
+    @Query('page') page?: number,
+    @Query('itemsPerPage') itemsPerPage?: number,
+  ) {
+    return this.manualOrderService.getAllManualOrders(page, itemsPerPage);
   }
 }

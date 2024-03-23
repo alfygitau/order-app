@@ -24,16 +24,36 @@ export class ManualOrderService {
     return await this.manualOrderRepository.save(manualOrder);
   }
 
-  getAllManualOrders() {}
+  async getAllManualOrders(page: number, itemsPerPage: number) {
+    if (!page || !itemsPerPage) {
+      return await this.manualOrderRepository.find();
+    }
+    const skip = (page - 1) * itemsPerPage;
+
+    const [manualOrders, itemsCount] = await Promise.all([
+      this.manualOrderRepository.find({
+        take: itemsPerPage,
+        skip,
+      }),
+      this.manualOrderRepository.count(),
+    ]);
+
+    return {
+      manualOrders,
+      itemsCount,
+      itemsPerPage: Number(itemsPerPage),
+      page: Number(page),
+    };
+  }
 
   updateManualOrder() {}
 
   deleteManualOrder() {}
 
   async uploadManualOrderFiles(files: Express.Multer.File[]) {
-    const UploadedFiles = await this.awsService.uploadOrderFiles(files);
-    console.log(UploadedFiles);
+    const uploadedFiles = await this.awsService.uploadOrderFiles(files);
+    console.log(uploadedFiles);
 
-    return { files: UploadedFiles };
+    return { files: uploadedFiles };
   }
 }
