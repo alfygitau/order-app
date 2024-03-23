@@ -42,6 +42,19 @@ export class ReportService {
       groupBy = 'DATE_FORMAT(user.created_at, "%Y-%m-01")';
     }
 
+    // Create a set of all timestamps within the selected range
+    const timestampsSet = new Set();
+    let currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+      timestampsSet.add(this.formatDate(currentDate, dateFormat));
+      if (timeDifferenceInDays <= 1) {
+        currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000); // Add 1 day
+      } else {
+        currentDate.setDate(currentDate.getDate() + 1); // Add 1 day
+      }
+    }
+
+    // Query database for counts of accounts
     const accountsData = await this.userRepository
       .createQueryBuilder('user')
       .select(
@@ -55,7 +68,25 @@ export class ReportService {
       .orderBy('time', 'ASC')
       .getRawMany();
 
-    return accountsData;
+    // Merge the result with timestampsSet to ensure all timestamps are included
+    const mergedData = Array.from(timestampsSet).map((timestamp) => {
+      const existingData = accountsData.find((data) => data.time === timestamp);
+      return existingData || { time: timestamp, number_of_accounts: 0 };
+    });
+
+    return mergedData;
+  }
+
+  private formatDate(date: Date, format: string): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    return format
+      .replace('%Y', year.toString())
+      .replace('%m', month)
+      .replace('%d', day)
+      .replace('%H', hours);
   }
 
   async getOrderInformation(
