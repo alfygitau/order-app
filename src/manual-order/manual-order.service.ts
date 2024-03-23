@@ -32,6 +32,7 @@ export class ManualOrderService {
 
   async uploadManualOrderFiles(files: Express.Multer.File[]) {
     const UploadedFiles = await this.awsService.uploadOrderFiles(files);
+    console.log(UploadedFiles);
 
     return { files: UploadedFiles };
   }
