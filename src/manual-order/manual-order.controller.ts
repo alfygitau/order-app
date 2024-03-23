@@ -14,13 +14,14 @@ export class ManualOrderController {
   constructor(private readonly manualOrderService: ManualOrderService) {}
 
   @Post('create')
+  createManualOrder(@Body() manualOrderPayload: CreateManualOrder) {
+    
+    return this.manualOrderService.createManualOrder(manualOrderPayload);
+  }
+
+  @Post('upload-manual-files')
   @UseInterceptors(FilesInterceptor('manual_order_files'))
-  createManualOrder(
-    @UploadedFiles() files: Express.Multer.File[],
-    @Body() manualOrderPayload: CreateManualOrder,
-  ) {
-    console.log(files);
-    console.log(manualOrderPayload);
-    return this.manualOrderService.createManualOrder(manualOrderPayload, files);
+  uploadManualOrderFiles(@UploadedFiles() files: Express.Multer.File[]) {
+    return this.manualOrderService.uploadManualOrderFiles(files);
   }
 }

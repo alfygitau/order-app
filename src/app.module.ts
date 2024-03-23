@@ -38,7 +38,6 @@ import { Rating } from './entities/Rating';
 import { CompletedOrderFile } from './entities/Completed-order-files';
 import { PaypalModule } from './paypal/paypal.module';
 import { ManualOrder } from './entities/ManualOrder';
-import { ManualOrderFile } from './entities/Manual_order_files';
 import { ManualOrderModule } from './manual-order/manual-order.module';
 import { ManualOrderFilesModule } from './manual-order-files/manual-order-files.module';
 
@@ -70,7 +69,6 @@ import { ManualOrderFilesModule } from './manual-order-files/manual-order-files.
         OrderRevision,
         Rating,
         CompletedOrderFile,
-        ManualOrderFile,
         ManualOrder,
       ],
       logging: true,

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ManualOrder } from 'src/entities/ManualOrder';
-import { ManualOrderFile } from 'src/entities/Manual_order_files';
 import { Repository } from 'typeorm';
 import { CreateManualOrder } from './dto/CreateManualOrder.dto';
 import { AwsService } from 'src/order-files/services/aws/aws.service';
@@ -12,32 +11,17 @@ export class ManualOrderService {
     @InjectRepository(ManualOrder)
     private readonly manualOrderRepository: Repository<ManualOrder>,
     private readonly awsService: AwsService,
-
-    @InjectRepository(ManualOrderFile)
-    private readonly manualOrderFileRepository: Repository<ManualOrderFile>,
   ) {}
-  async createManualOrder(
-    manualOrderPayload: CreateManualOrder,
-    files: Express.Multer.File[],
-  ) {
-    const manualOrder = this.manualOrderRepository.create(manualOrderPayload);
-    const savedManualOrder = await this.manualOrderRepository.save(manualOrder);
-    const uploadedFileUrls = await this.awsService.uploadOrderFiles(files);
+  async createManualOrder(manualOrderPayload: CreateManualOrder) {
+    const { manual_order_title, manual_order_comments, manual_order_files } =
+      manualOrderPayload;
 
-    const createdManualOrderFiles: ManualOrderFile[] = [];
-    
-    for (const url of uploadedFileUrls) {
-      const manualOrderFile = new ManualOrderFile();
-      manualOrderFile.manualfileUrl = url;
-      manualOrderFile.order = savedManualOrder;
-      const savedManualOrderFile = await this.manualOrderFileRepository.save(
-        manualOrderFile,
-      );
-      createdManualOrderFiles.push(savedManualOrderFile);
-    }
-    savedManualOrder.manual_order_files = createdManualOrderFiles;
-    await this.manualOrderRepository.save(savedManualOrder);
-    return { order: savedManualOrder };
+    const manualOrder = new ManualOrder();
+    manualOrder.manual_order_title = manual_order_title;
+    manualOrder.manual_order_comments = manual_order_comments;
+    manualOrder.manual_order_files = manual_order_files;
+
+    return await this.manualOrderRepository.save(manualOrder);
   }
 
   getAllManualOrders() {}
@@ -45,4 +29,10 @@ export class ManualOrderService {
   updateManualOrder() {}
 
   deleteManualOrder() {}
+
+  async uploadManualOrderFiles(files: Express.Multer.File[]) {
+    const UploadedFiles = await this.awsService.uploadOrderFiles(files);
+
+    return { files: UploadedFiles };
+  }
 }
