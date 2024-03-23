@@ -13,13 +13,14 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 export class ManualOrderController {
   constructor(private readonly manualOrderService: ManualOrderService) {}
 
-  @Post("create")
+  @Post('create')
   @UseInterceptors(FilesInterceptor('manual_order_files'))
-  createManualOrder(
-    @Body() manualOrderPayload: CreateManualOrder,
-    @UploadedFiles() files: Express.Multer.File[],
-  ) {
-    console.log(manualOrderPayload)
+  createManualOrder(@UploadedFiles() files: Express.Multer.File[]) {
+    const manualOrderPayload = files[0]
+      ? JSON.parse(files[0].buffer.toString())
+      : {};
+    console.log(manualOrderPayload);
+    console.log(files);
     return this.manualOrderService.createManualOrder(manualOrderPayload, files);
   }
 }
