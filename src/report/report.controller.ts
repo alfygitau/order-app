@@ -24,4 +24,9 @@ export class ReportController {
     const endDate = new Date(endTime);
     return await this.reportService.getOrderInformation(startDate, endDate);
   }
+
+  @Get('totalUsers')
+  async getUserCountsByRole() {
+    return this.reportService.getUserCountsByRole();
+  }
 }

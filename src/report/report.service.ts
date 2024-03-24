@@ -149,4 +149,14 @@ export class ReportService {
 
     return mergedData;
   }
+
+  async getUserCountsByRole() {
+    const countsByRole = await this.userRepository
+      .createQueryBuilder('user')
+      .select('user.role AS role, COUNT(user.userId) AS count')
+      .groupBy('user.role')
+      .getRawMany();
+
+    return countsByRole;
+  }
 }
