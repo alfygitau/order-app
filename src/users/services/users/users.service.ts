@@ -10,6 +10,7 @@ import { CreateUser, UpdateUser } from 'src/utils/types';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Rating } from 'src/entities/Rating';
+import { Profile } from 'src/entities/Profile';
 
 @Injectable()
 export class UsersService {
@@ -26,6 +27,7 @@ export class UsersService {
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.orders', 'orders')
       .leftJoinAndSelect('user.ratings', 'ratings')
+      .leftJoinAndSelect('user.profile', 'profile')
       .addGroupBy('user.userId')
       .addSelect('COUNT(orders.order_id)', 'orderCount')
       .addSelect('AVG(ratings.value)', 'averageRating');
@@ -49,6 +51,9 @@ export class UsersService {
         updated_at: userWithCountAndRatings.user_updated_at,
         averageRating: parseFloat(userWithCountAndRatings.averageRating) || 0,
         orderCount: parseInt(userWithCountAndRatings.orderCount, 10) || 0,
+        profile: userWithCountAndRatings.profile
+          ? userWithCountAndRatings.profile
+          : null,
       });
 
       return user;
