@@ -50,6 +50,12 @@ export class ManualOrderService {
 
   deleteManualOrder() {}
 
+  getManualOrderById(id: number) {
+    return this.manualOrderRepository.findOne({
+      where: { manual_order_id: id },
+    });
+  }
+
   async uploadManualOrderFiles(files: Express.Multer.File[]) {
     const uploadedFiles = await this.awsService.uploadOrderFiles(files);
     console.log(uploadedFiles);

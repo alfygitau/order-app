@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
   Query,
   UploadedFiles,
@@ -32,5 +34,10 @@ export class ManualOrderController {
     @Query('itemsPerPage') itemsPerPage?: number,
   ) {
     return this.manualOrderService.getAllManualOrders(page, itemsPerPage);
+  }
+
+  @Get(':id')
+  getManualOrderById(@Param('id', ParseIntPipe) id: number) {
+    return this.manualOrderService.getManualOrderById(id);
   }
 }
