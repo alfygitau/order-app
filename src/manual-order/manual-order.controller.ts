@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
   UploadedFiles,
@@ -39,5 +41,18 @@ export class ManualOrderController {
   @Get(':id')
   getManualOrderById(@Param('id', ParseIntPipe) id: number) {
     return this.manualOrderService.getManualOrderById(id);
+  }
+
+  @Delete(':id')
+  removeManualOrder(@Param('id', ParseIntPipe) id: number) {
+    return this.manualOrderService.deleteManualOrder(id);
+  }
+
+  @Patch(':id')
+  updateManualOrder(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() payload: CreateManualOrder,
+  ) {
+    return this.manualOrderService.updateManualOrder(id, payload);
   }
 }

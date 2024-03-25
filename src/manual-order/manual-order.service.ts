@@ -46,9 +46,27 @@ export class ManualOrderService {
     };
   }
 
-  updateManualOrder() {}
+  async updateManualOrder(id: number, payload: CreateManualOrder) {
+    const manualOrder = await this.manualOrderRepository.findOne({
+      where: { manual_order_id: id },
+    });
+    if (!manualOrder) {
+      throw new Error(`Manual order with id ${id} not found.`);
+    }
+    Object.assign(manualOrder, payload);
 
-  deleteManualOrder() {}
+    return this.manualOrderRepository.save(manualOrder);
+  }
+
+  async deleteManualOrder(id: number) {
+    const manualOrderToRemove = await this.manualOrderRepository.findOne({
+      where: { manual_order_id: id },
+    });
+    if (!manualOrderToRemove) {
+      throw new Error(`Manual order with id ${id} not found.`);
+    }
+    return await this.manualOrderRepository.remove(manualOrderToRemove);
+  }
 
   getManualOrderById(id: number) {
     return this.manualOrderRepository.findOne({
