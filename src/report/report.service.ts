@@ -159,4 +159,21 @@ export class ReportService {
 
     return countsByRole;
   }
+
+  async getOrdersCounts() {
+    const orderCount = await this.orderRepository
+      .createQueryBuilder('order')
+      .select('COUNT(order.order_id) AS orderCount')
+      .getRawOne();
+  
+    const manualOrderCount = await this.manualOrderRepository
+      .createQueryBuilder('manualOrder')
+      .select('COUNT(manualOrder.manual_order_id) AS manualOrderCount')
+      .getRawOne();
+  
+    return {
+      orderCount: parseInt(orderCount.orderCount),
+      manualOrderCount: parseInt(manualOrderCount.manualOrderCount)
+    };
+  }
 }

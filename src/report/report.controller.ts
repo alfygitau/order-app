@@ -29,4 +29,9 @@ export class ReportController {
   async getUserCountsByRole() {
     return this.reportService.getUserCountsByRole();
   }
+
+  @Get('totalOrders')
+  async getOrdersCount() {
+    return this.reportService.getOrdersCounts();
+  }
 }
